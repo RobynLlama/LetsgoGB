@@ -1,17 +1,10 @@
 # Pokémon Red and Blue
 
-This is a disassembly of Pokémon Red and Blue.
-
-It builds the following roms:
-
-* Pokemon Red (UE) [S][!].gb  `md5: 3d45c1ee9abd5738df46d2bdda8b57dc`
-* Pokemon Blue (UE) [S][!].gb `md5: 50927e843568814f7ed45ec4f944bd8b`
-
-To set up the repository, see [**INSTALL.md**](INSTALL.md).
-
+Crunchy modifications to Pokemon Red to change the battle mechanics to resemble Let's Go Evee/Pikachu (a little bit)
 
 ## See also
 
+* Disassembly of [**Pokemon Red/Blue**][pokered]
 * Disassembly of [**Pokémon Yellow**][pokeyellow]
 * Disassembly of [**Pokémon Gold**][pokegold]
 * Disassembly of [**Pokémon Crystal**][pokecrystal]
@@ -20,9 +13,8 @@ To set up the repository, see [**INSTALL.md**](INSTALL.md).
 * Disassembly of [**Pokémon Ruby**][pokeruby]
 * Disassembly of [**Pokémon Fire Red**][pokefirered]
 * Disassembly of [**Pokémon Emerald**][pokeemerald]
-* Discord: [**pret**][Discord]
-* irc: **irc.freenode.net** [**#pret**][irc]
 
+[pokered]: https://github.com/pret/pokered
 [pokeyellow]: https://github.com/pret/pokeyellow
 [pokegold]: https://github.com/pret/pokegold
 [pokecrystal]: https://github.com/pret/pokecrystal
