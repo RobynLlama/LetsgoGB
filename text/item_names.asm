@@ -6,7 +6,7 @@ ItemNames:
 	db "TOWN MAP@"
 	db "BICYCLE@"
 	db "?????@"
-	db "SAFARI BALL@"
+	db "POKE BALL@"
 	db "POKéDEX@"
 	db "MOON STONE@"
 	db "ANTIDOTE@"

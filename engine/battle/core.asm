@@ -229,6 +229,12 @@ StartBattle:
 	ld hl, wEnemyMon1HP
 	ld bc, wEnemyMon2 - wEnemyMon1 - 1
 	ld d, $3
+	
+	;Debug: Always have 15 safari balls
+	;Todo: Link this to the actual inventory
+	ld a, 15
+	ld [wNumSafariBalls], a
+	
 .findFirstAliveEnemyMonLoop
 	inc d
 	ld a, [hli]
@@ -251,9 +257,16 @@ StartBattle:
 	and a
 	jp z, HandlePlayerBlackOut ; jump if no mon is alive
 	call LoadScreenTilesFromBuffer1
-	ld a, [wBattleType]
-	and a ; is it a normal battle?
-	jp z, .playerSendOutFirstMon ; if so, send out player mon
+	
+	;Is it a trainer battle?
+	ld a, [wIsInBattle]
+	dec a
+	jp nz, .playerSendOutFirstMon
+	
+	;Setup Menus and Actions for non-trainer battles to use safari mode
+	ld a, 2
+	ld [wBattleType], a
+	
 ; safari zone battle
 .displaySafariZoneBattleMenu
 	call DisplayBattleMenu
@@ -3911,7 +3924,7 @@ ExclamationPointMoveSets:
 	db $00
 	db MEDITATE, AGILITY, TELEPORT, MIMIC, DOUBLE_TEAM, BARRAGE
 	db $00
-	db POUND, SCRATCH, VICEGRIP, WING_ATTACK, FLY, BUZZ, SLAM, HORN_ATTACK, BODY_SLAM
+	db POUND, SCRATCH, VICEGRIP, WING_ATTACK, FLY, BIND, SLAM, HORN_ATTACK, BODY_SLAM
 	db WRAP, THRASH, TAIL_WHIP, LEER, BITE, GROWL, ROAR, SING, PECK, COUNTER
 	db STRENGTH, ABSORB, STRING_SHOT, EARTHQUAKE, FISSURE, DIG, TOXIC, SCREECH, HARDEN
 	db MINIMIZE, WITHDRAW, DEFENSE_CURL, METRONOME, LICK, CLAMP, CONSTRICT, POISON_GAS
