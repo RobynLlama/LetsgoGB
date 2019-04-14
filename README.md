@@ -2,6 +2,10 @@
 
 Crunchy modifications to Pokemon Red to change the battle mechanics to resemble Let's Go Evee/Pikachu (a little bit)
 
+## References
+* ASMSchool [LINK][asmschool]
+* Z80 Heaven [LINK][z80heaven]
+
 ## See also
 
 * Disassembly of [**Pokemon Red/Blue**][pokered]
@@ -25,3 +29,5 @@ Crunchy modifications to Pokemon Red to change the battle mechanics to resemble 
 [pokeemerald]: https://github.com/pret/pokeemerald
 [Discord]: https://discord.gg/cJxDDVP
 [irc]: https://kiwiirc.com/client/irc.freenode.net/?#pret
+[asmschool]:http://gameboy.mongenel.com/asmschool.html
+[z80heaven]:http://z80-heaven.wikidot.com/
