@@ -230,11 +230,6 @@ StartBattle:
 	ld bc, wEnemyMon2 - wEnemyMon1 - 1
 	ld d, $3
 	
-	;Debug: Always have 15 safari balls
-	;Todo: Link this to the actual inventory
-	ld a, 15
-	ld [wNumSafariBalls], a
-	
 .findFirstAliveEnemyMonLoop
 	inc d
 	ld a, [hli]
@@ -266,6 +261,34 @@ StartBattle:
 	;Setup Menus and Actions for non-trainer battles to use safari mode
 	ld a, 2
 	ld [wBattleType], a
+	
+	;DEBUG: Add some balls to inventory
+	;ld hl, wNumBagItems
+	;ld a, GREAT_BALL
+	;ld [wcf91], a
+	;ld a, 4
+	;ld [wItemQuantity], a
+	;call AddItemToInventory
+	
+	;Get number of great balls in inventory
+	ld b, GREAT_BALL
+	ld hl, wNumBagItems
+.SFballloop
+	inc hl
+	ld a, [hli]
+	cp $ff
+	jr z, .SFnotInBag
+	cp b
+	jr nz, .SFballloop
+	ld a, [hl]
+	ld b, a
+	jr .SFballend
+.SFnotInBag
+	ld b, 0
+.SFballend
+	;Set number of Safari Balls
+	ld a, b
+	ld [wNumSafariBalls], a
 	
 ; safari zone battle
 .displaySafariZoneBattleMenu
@@ -306,7 +329,7 @@ StartBattle:
 .compareWithRandomValue
 	call Random
 	cp b
-	jr nc, .checkAnyPartyAlive
+	jp nc, .checkAnyPartyAlive
 	jr EnemyRan ; if b was greater than the random value, the enemy runs
 
 .outOfSafariBallsText
@@ -2257,10 +2280,52 @@ DisplayBattleMenu:
 	xor a
 	ld [wNumRunAttempts], a
 	jp LoadScreenTilesFromBuffer1 ; restore saved screen and return
+	
 .throwSafariBallWasSelected
-	ld a, SAFARI_BALL
+	;Check if we have any balls
+	
+.outOfSafariBallsText
+	TX_FAR _OutOfSafariBallsText
+	db "@"
+	
+	ld hl, .outOfSafariBallsText
+	ld a, [wNumSafariBalls]
+	and a
+	jp z, PrintText
+	
+	;Get slot ID for Great Balls
+	ld hl, wNumBagItems
+	ld c, 0
+.SlotLoop
+	inc hl
+	ld a, [hl]
+	ld b, a ; b = ID of current item in table
+	ld a, GREAT_BALL ; searching for Great Balls
+	cp b ; Is this the right item?
+	jr z, .SlotBreak ; if so, break
+	inc hl
+	inc c
+	;DEBUG: Shunt result into D70D
+	;ld a, c
+	;ld [wSafariSteps], a
+	ld a, [hl]
+	cp $ff ; is it the end of the table?
+	jr nz, .SlotLoop
+.SlotBreak
+	;Decrement Great Balls
+	ld a, c
+	ld hl, wNumBagItems
+	ld [wWhichPokemon], a
+	ld a, 1
+	ld [wItemQuantity], a
+	call RemoveItemFromInventory
+	
+	ld hl, 0
+
+	;Use a Great Ball
+	ld a, GREAT_BALL
 	ld [wcf91], a
-	jr UseBagItem
+	jp UseBagItem
 
 .upperLeftMenuItemWasNotSelected ; a menu item other than the upper left item was selected
 	cp $2

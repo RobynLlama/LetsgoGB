@@ -1041,10 +1041,8 @@ _PokemonStuffText::
 	done
 
 _OutOfSafariBallsText::
-	text "PA: Ding-dong!"
-
-	para "You are out of"
-	line "SAFARI BALLs!"
+	text "<PLAYER> is"
+	line "out of balls!"
 	prompt
 
 _WildRanText::
