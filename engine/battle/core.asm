@@ -5608,6 +5608,11 @@ MoveHitTest:
 ; if the random number generated is greater than or equal to the scaled accuracy, the move misses
 ; note that this means that even the highest accuracy is still just a 255/256 chance, not 100%
 	call BattleRandom
+	;Clamp A to 255 to fix Gen1 miss
+	cp $ff
+	jr nz, .NoClamp
+	dec a
+.NoClamp
 	cp b
 	jr nc, .moveMissed
 	ret
