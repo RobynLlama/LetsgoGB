@@ -1,5 +1,7 @@
 BattleCore:
 
+include "engine/get_bag_slot.asm"
+
 ; These are move effects (second value from the Moves table in bank $E).
 ResidualEffects1:
 ; most non-side effects
@@ -2271,7 +2273,7 @@ DisplayBattleMenu:
 	dec a ; decrement a to 1
 .handleMenuSelection
 	and a
-	jr nz, .upperLeftMenuItemWasNotSelected
+	jp nz, .upperLeftMenuItemWasNotSelected
 ; the upper left menu item was selected
 	ld a, [wBattleType]
 	cp BATTLE_TYPE_SAFARI
@@ -2292,26 +2294,13 @@ DisplayBattleMenu:
 	ld a, [wNumSafariBalls]
 	and a
 	jp z, PrintText
-	
-	;Get slot ID for Great Balls
-	ld hl, wNumBagItems
-	ld c, 0
-.SlotLoop
-	inc hl
-	ld a, [hl]
-	ld b, a ; b = ID of current item in table
-	ld a, GREAT_BALL ; searching for Great Balls
-	cp b ; Is this the right item?
-	jr z, .SlotBreak ; if so, break
-	inc hl
-	inc c
-	;DEBUG: Shunt result into D70D
-	;ld a, c
-	;ld [wSafariSteps], a
-	ld a, [hl]
-	cp $ff ; is it the end of the table?
-	jr nz, .SlotLoop
-.SlotBreak
+
+	;Get slot ID of Great Balls
+	ld a, GREAT_BALL
+	ld [wcf91], a
+	ld a, 0
+	call GetBagSlotByItemID
+
 	;Decrement Great Balls
 	ld a, c
 	ld hl, wNumBagItems
