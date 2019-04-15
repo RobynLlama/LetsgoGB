@@ -1,6 +1,6 @@
 BattleCore:
 
-include "engine/get_bag_slot.asm"
+include "engine/get_bag_helpers.asm"
 
 ; These are move effects (second value from the Moves table in bank $E).
 ResidualEffects1:
@@ -261,7 +261,7 @@ StartBattle:
 	jp nz, .playerSendOutFirstMon
 	
 	;Setup Menus and Actions for non-trainer battles to use safari mode
-	ld a, 2
+	ld a, BATTLE_TYPE_SAFARI
 	ld [wBattleType], a
 	
 	;DEBUG: Add some balls to inventory
@@ -274,20 +274,8 @@ StartBattle:
 	
 	;Get number of great balls in inventory
 	ld b, GREAT_BALL
-	ld hl, wNumBagItems
-.SFballloop
-	inc hl
-	ld a, [hli]
-	cp $ff
-	jr z, .SFnotInBag
-	cp b
-	jr nz, .SFballloop
-	ld a, [hl]
-	ld b, a
-	jr .SFballend
-.SFnotInBag
-	ld b, 0
-.SFballend
+	call GetBagAmount
+
 	;Set number of Safari Balls
 	ld a, b
 	ld [wNumSafariBalls], a
