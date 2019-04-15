@@ -287,12 +287,13 @@ StartBattle:
 	ld a, [wActionResultOrTookBattleTurn]
 	and a ; was the item used successfully?
 	jr z, .displaySafariZoneBattleMenu ; if not, display the menu again; XXX does this ever jump?
-	ld a, [wNumSafariBalls]
-	and a
-	jr nz, .notOutOfSafariBalls
-	call LoadScreenTilesFromBuffer1
-	ld hl, .outOfSafariBallsText
-	jp PrintText
+	;Ball check has been moved to L2280
+	;ld a, [wNumSafariBalls]
+	;and a
+	;jr nz, .notOutOfSafariBalls
+	;call LoadScreenTilesFromBuffer1
+	;ld hl, .outOfSafariBallsText
+	;jp PrintText
 .notOutOfSafariBalls
 	callab PrintSafariZoneBattleText
 	ld a, [wEnemyMonSpeed + 1]
