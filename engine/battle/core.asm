@@ -323,9 +323,9 @@ StartBattle:
 	jp nc, .checkAnyPartyAlive
 	jr EnemyRan ; if b was greater than the random value, the enemy runs
 
-.outOfSafariBallsText
-	TX_FAR _OutOfSafariBallsText
-	db "@"
+;.outOfSafariBallsText
+	;TX_FAR _OutOfSafariBallsText
+	;db "@"
 
 .playerSendOutFirstMon
 	xor a
@@ -2431,6 +2431,8 @@ UseBagItem:
 	ld [wCapturedMonSpecies], a
 	ld a, $2
 	ld [wBattleResult], a
+	;Gain Experience for captured mon
+	callab GainExperience
 	scf ; set carry
 	ret
 

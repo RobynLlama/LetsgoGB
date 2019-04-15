@@ -2,6 +2,12 @@ GainExperience:
 	ld a, [wLinkState]
 	cp LINK_STATE_BATTLING
 	ret z ; return if link battle
+	
+	;Set all EXP flags to true
+	;TODO: Decide if we should test for BATTLE_TYPE_SAFARI here or not
+	ld a, $ff
+	ld [wPartyGainExpFlags], a
+	
 	call DivideExpDataByNumMonsGainingExp
 	ld hl, wPartyMon1
 	xor a
@@ -19,7 +25,6 @@ GainExperience:
 	predef FlagActionPredef
 	ld a, c
 	and a ; is mon's gain exp flag set?
-	;Todo: Modify exp gain to whole party (remove exp share)
 	pop hl
 	jp z, .nextMon ; if mon's gain exp flag not set, go to next mon
 	ld de, (wPartyMon1HPExp + 1) - (wPartyMon1HP + 1)
