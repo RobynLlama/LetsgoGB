@@ -22,3 +22,21 @@ GetBagSlotByItemID:
 	jr nz, .SlotLoop
 .SlotBreak
 	ret
+	
+GetBagAmount:
+; In: b = item ID
+; Out: b = how many of that item are in the bag
+	ld hl, wNumBagItems
+.loop
+	inc hl
+	ld a, [hli]
+	cp $ff
+	jr z, .notInBag
+	cp b
+	jr nz, .loop
+	ld a, [hl]
+	ld b, a
+	ret
+.notInBag
+	ld b, 0
+	ret
