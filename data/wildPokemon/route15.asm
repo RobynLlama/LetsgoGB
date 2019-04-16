@@ -2,7 +2,7 @@ Route15Mons:
 	db $0F
 	IF DEF(_RED)
 		db 24,ODDISH
-		db 26,DITTO
+		db 26,ODDISH
 		db 23,PIDGEY
 		db 26,VENONAT
 		db 22,ODDISH
@@ -14,7 +14,7 @@ Route15Mons:
 	ENDC
 	IF DEF(_BLUE)
 		db 24,BELLSPROUT
-		db 26,DITTO
+		db 26,BELLSPROUT
 		db 23,PIDGEY
 		db 26,VENONAT
 		db 22,BELLSPROUT

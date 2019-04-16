@@ -12,7 +12,7 @@ DungeonMonsB1:
 	IF DEF(_BLUE)
 		db 57,SANDSLASH
 	ENDC
-	db 65,DITTO
-	db 63,DITTO
-	db 67,DITTO
+	db 60,RHYDON
+	db 60,MAROWAK
+	db 60,ELECTRODE
 	db $00

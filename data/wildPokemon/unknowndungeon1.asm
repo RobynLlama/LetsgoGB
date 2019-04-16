@@ -14,5 +14,5 @@ DungeonMons1:
 	db 49,KADABRA
 	db 52,PARASECT
 	db 53,RAICHU
-	db 53,DITTO
+	db 48,GOLBAT
 	db $00
