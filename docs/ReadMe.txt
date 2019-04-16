@@ -1,10 +1,11 @@
 PokemonRedGo Project ReadMe
 Table of Contents
-	[Section 1] Safari Game Mode
-	[Section 2] Earning Experience and Money
-	[Section 3] Pokeball Update
-	[Section 4] Known Issues
-	[Section 5] See Also
+	[Section 1] 	Safari Game Mode
+	[Section 1-1] 	Imposter Battles
+	[Section 2] 	Earning Experience and Money
+	[Section 3] 	Pokeball Update
+	[Section 4] 	Known Issues
+	[Section 5] 	See Also
 	
 Section 1: Safari Game Mode
 	All wild battles are now done in the Safari Game Mode style. The BALL option is now
@@ -13,6 +14,11 @@ Section 1: Safari Game Mode
 	almost completely useless due to the base mechanics being awful. These features will
 	likely be replaced in a future update. Running will always work so at least caves
 	full of Zubat will be a bit less annoying :]
+	
+Section 1-1: Imposter Battles
+	Dittos have been removed from all maps. How will you find one now? Hey, Maybe you're
+	just imagining things but that wild pokemon doesn't quite look right. Something is 
+	just.. off. Maybe you should catch it!
 	
 Section 2: Earning Experience and Money
 	When catching a wild pokemon all pokemon in your party will gain split XP as though
