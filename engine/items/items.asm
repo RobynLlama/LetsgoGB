@@ -514,7 +514,14 @@ ItemUseBall:
 	dec a ; is this the old man battle?
 	jr z, .oldManCaughtMon ; if so, don't give the player the caught Pokémon
 
+	;Load a different capture text if the mon was an imposter ditto
+	ld a, [wEnemyMonSpecies]
+	cp $4C
+	ld hl, ItemUseBallTextDitto
+	jr z, .SkipBallText
+
 	ld hl, ItemUseBallText05
+.SkipBallText
 	call PrintText
 
 ; Add the caught Pokémon to the Pokédex.
@@ -611,6 +618,15 @@ ItemUseBallText05:
 	TX_SFX_CAUGHT_MON
 	TX_BLINK
 	db "@"
+	
+ItemUseBallTextDitto:
+;Whoa it was a Ditto!
+;play a sound too
+	TX_FAR _ItemUseBallTextDitto
+	TX_SFX_CAUGHT_MON
+	TX_BLINK
+	db "@"
+	
 ItemUseBallText07:
 ;"X was transferred to Bill's PC"
 	TX_FAR _ItemUseBallText07

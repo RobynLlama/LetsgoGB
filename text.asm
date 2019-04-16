@@ -2794,6 +2794,11 @@ _ItemUseBallText05::
 	TX_RAM wEnemyMonNick
 	text " was"
 	cont "caught!@@"
+	
+_ItemUseBallTextDitto::
+	text "Whoa!"
+	line "It was a ditto!"
+	prompt
 
 _ItemUseBallText07::
 	TX_RAM wBoxMonNicks

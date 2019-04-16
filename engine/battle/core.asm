@@ -6265,7 +6265,7 @@ LoadEnemyMonData:
 	ld [wEnemyMonSpecies], a
 	ld [wd0b5], a
 	call GetMonHeader
-	ld a, [wEnemyBattleStatus3]
+	ld a, [wEnemyBattleStatus3]	
 	bit TRANSFORMED, a ; is enemy mon transformed?
 	ld hl, wTransformedEnemyMonOriginalDVs ; original DVs before transforming
 	ld a, [hli]
@@ -6308,6 +6308,20 @@ LoadEnemyMonData:
 	xor a
 	inc hl
 	ld [hl], a ; init status to 0
+	
+	;Check if it is an imposter battle
+	call BattleRandom
+	ld b, a
+	;clear carry
+	xor a
+	; (A-1)/256 chance to be an imposter, ~1.1% if A=3
+	ld a, 3
+	cp b
+	jr c, .NotImposter
+	ld a, %00001000
+	ld [wEnemyBattleStatus3], a
+.NotImposter
+	
 	jr .copyTypes
 ; if it's a trainer mon, copy the HP and status from the enemy party data
 .copyHPAndStatusFromPartyData
