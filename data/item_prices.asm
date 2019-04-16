@@ -1,14 +1,14 @@
 ItemPrices:
 	money 0     ; MASTER_BALL
 	money 1200  ; ULTRA_BALL
-	money 600   ; GREAT_BALL
+	money 500   ; GREAT_BALL
 	money 200   ; POKE_BALL
 	money 0     ; TOWN_MAP
 	money 0     ; BICYCLE
 	money 0     ; SURFBOARD
-	money 1000  ; SAFARI_BALL
+	money 0		; SAFARI_BALL
 	money 0     ; POKEDEX
-	money 0     ; MOON_STONE
+	money 2100  ; MOON_STONE
 	money 100   ; ANTIDOTE
 	money 250   ; BURN_HEAL
 	money 250   ; ICE_HEAL
@@ -47,7 +47,7 @@ ItemPrices:
 	money 950   ; X_ACCURACY
 	money 2100  ; LEAF_STONE
 	money 0     ; CARD_KEY
-	money 10000 ; NUGGET
+	money 10000  ; NUGGET
 	money 9800  ; XXX PP_UP
 	money 1000  ; POKE_DOLL
 	money 600   ; FULL_HEAL
