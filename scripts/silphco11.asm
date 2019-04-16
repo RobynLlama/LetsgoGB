@@ -306,7 +306,7 @@ SilphCo11Text1:
 	jp nz, .asm_62308
 	ld hl, SilphCoPresidentText
 	call PrintText
-	lb bc, MASTER_BALL, 1
+	lb bc, GREAT_BALL, 12
 	call GiveItem
 	jr nc, .BagFull
 	ld hl, ReceivedSilphCoMasterBallText
