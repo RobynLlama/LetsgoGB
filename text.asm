@@ -1799,22 +1799,22 @@ _CantTakeMonText::
 	prompt
 
 _ReleaseWhichMonText::
-	text "Release which"
+	text "Transfer which"
 	line "#MON?"
 	done
 
 _OnceReleasedText::
-	text "Once released,"
+	text "Really? Give"
 	line "@"
 	TX_RAM wcf4b
-	text " is"
-	cont "gone forever. OK?"
+	text " to"
+	cont "the Prof?"
 	done
 
 _MonWasReleasedText::
 	TX_RAM wcf4b
 	text " was"
-	line "released outside."
+	line "transferred."
 	cont "Bye @"
 
 _CF4BExclamationText::
@@ -2796,7 +2796,7 @@ _ItemUseBallText05::
 	cont "caught!@@"
 	
 _ItemUseBallTextDitto::
-	text "Whoa!"
+	text "Whoa!?"
 	line "It was a ditto!"
 	prompt
 

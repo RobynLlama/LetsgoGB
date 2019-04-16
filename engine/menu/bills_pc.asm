@@ -1,3 +1,5 @@
+include "engine/xfer_reward_helpers.asm"
+
 DisplayPCMainMenu::
 	xor a
 	ld [H_AUTOBGTRANSFERENABLED], a
@@ -309,6 +311,10 @@ BillsPCRelease:
 	jr nz, .loop
 	inc a
 	ld [wRemoveMonFromBox], a
+	
+	;This is where we insert xfer rewards calculations
+	call GetXferReward
+	
 	call RemovePokemon
 	call WaitForSoundToFinish
 	ld a, [wcf91]
@@ -341,7 +347,7 @@ DisplayMonListMenu:
 BillsPCMenuText:
 	db   "WITHDRAW ", $4a
 	next "DEPOSIT ",  $4a
-	next "RELEASE ",  $4a
+	next "TRANSFER ",  $4a
 	next "CHANGE BOX"
 	next "SEE YA!"
 	db "@"
