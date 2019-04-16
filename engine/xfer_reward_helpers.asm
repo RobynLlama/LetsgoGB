@@ -26,10 +26,73 @@ GetXferReward:
 	
 .DoneMath1
 	;this is where we load the level from the mon data
-	ld a, [hl]
-	;DEBUG
-	ld [$D70D], a
+	ld c, [hl]
 	
 	;Now we get to generate rewards :]
-	;Todo: Rewards
+.GiveReward
+	;Load reward table
+	ld hl, RewardItemsTable
+	;get a random number
+	call Random
+	;clamp it to 64
+	and %00111111
+	;Stuff it into b and prepare DE
+	ld b, a
+	;clear carry
+	xor a
+	;Check if its an item reward
+	ld a, 41
+	cp b
+	jr nc, .CheckDone
+	;Add Reward
+	;Remove blank slots
+	ld a, b
+	ld b, 40
+	;Subtract the first 40 blanks from the table
+	sub b
+	;Load reward table
+	ld hl, RewardItemsTable
+	ld a, [hl]
+	;Add to inventory
+	ld hl, wNumBagItems
+	ld [wcf91], a
+	ld a, 1
+	ld [wItemQuantity], a
+	call AddItemToInventory
+.CheckDone
+	dec c
+	jr nz, .GiveReward
+
+.DoneRewards
 	ret
+	
+; Reward Table
+RewardItemsTable:
+	; ~62% nothing
+	; ~28% : 41 - 58: Basic Reward
+	db GREAT_BALL
+	db GREAT_BALL
+	db GREAT_BALL
+	db GREAT_BALL
+	db GREAT_BALL
+	db POTION
+	db POTION
+	db POTION
+	db POTION
+	db POTION
+	db POTION
+	db REPEL
+	db REPEL
+	db REPEL
+	db REPEL
+	db SUPER_POTION
+	db SUPER_POTION
+	db SUPER_POTION
+	; ~9% : 59 - 64: Super Reward
+	db HYPER_POTION
+	db HYPER_POTION
+	db RARE_CANDY
+	db RARE_CANDY
+	db MOON_STONE
+	db NUGGET
+	
