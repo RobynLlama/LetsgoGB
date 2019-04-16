@@ -20,28 +20,28 @@ _SilphCoPresidentText::
 	prompt
 
 _ReceivedSilphCoMasterBallText::
-	text "<PLAYER> got a"
-	line "@"
+	text "<PLAYER> got"
+	line "12 x "
 	TX_RAM wcf4b
 	text "!@@"
 
 _SilphCo10Text_6231c::
-	text "PRESIDENT: You"
-	line "can't buy that"
-	cont "anywhere!"
+	text "PRESIDENT:"
+	line "Please excuse me"
+	line "I'm very busy."
 
-	para "It's our secret"
-	line "prototype MASTER"
-	cont "BALL!"
+	;para "It's our secret"
+	;line "prototype MASTER"
+	;cont "BALL!"
 
-	para "It will catch any"
-	line "#MON without"
-	cont "fail!"
+	;para "It will catch any"
+	;line "#MON without"
+	;cont "fail!"
 
-	para "You should be"
-	line "quiet about using"
-	cont "it, though."
-	done
+	;para "You should be"
+	;line "quiet about using"
+	;cont "it, though."
+	;done
 
 _SilphCoMasterBallNoRoomText::
 	text "You have no"

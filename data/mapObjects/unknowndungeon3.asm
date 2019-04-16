@@ -8,7 +8,7 @@ UnknownDungeon3Object:
 
 	db 3 ; objects
 	object SPRITE_SLOWBRO, 27, 13, STAY, DOWN, 1, MEWTWO, 70
-	object SPRITE_BALL, 16, 9, STAY, NONE, 2, ULTRA_BALL
+	object SPRITE_BALL, 16, 9, STAY, NONE, 2, GREAT_BALL
 	object SPRITE_BALL, 18, 1, STAY, NONE, 3, MAX_REVIVE
 
 	; warp-to
