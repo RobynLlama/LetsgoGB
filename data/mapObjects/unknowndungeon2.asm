@@ -13,7 +13,7 @@ UnknownDungeon2Object:
 
 	db 3 ; objects
 	object SPRITE_BALL, 29, 9, STAY, NONE, 1, PP_UP
-	object SPRITE_BALL, 4, 15, STAY, NONE, 2, ULTRA_BALL
+	object SPRITE_BALL, 4, 15, STAY, NONE, 2, GREAT_BALL
 	object SPRITE_BALL, 13, 6, STAY, NONE, 3, FULL_RESTORE
 
 	; warp-to
