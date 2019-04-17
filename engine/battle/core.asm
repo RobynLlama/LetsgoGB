@@ -260,6 +260,11 @@ StartBattle:
 	dec a
 	jp nz, .playerSendOutFirstMon
 	
+	; is it the old man tutorial?
+	ld a, [wBattleType]
+	dec a
+	jp z, DisplayBattleMenu
+	
 	;Setup Menus and Actions for non-trainer battles to use safari mode
 	ld a, BATTLE_TYPE_SAFARI
 	ld [wBattleType], a
@@ -935,7 +940,7 @@ FaintEnemyPokemon:
 	ld b, EXP_ALL
 	call IsItemInBag
 	push af
-	jr z, .giveExpToMonsThatFought ; if no exp all, then jump
+	jr .giveExpToMonsThatFought ;Never call EXP ALL
 
 ; the player has exp all
 ; first, we halve the values that determine exp gain
@@ -2431,7 +2436,12 @@ UseBagItem:
 	ld [wCapturedMonSpecies], a
 	ld a, $2
 	ld [wBattleResult], a
-	;Gain Experience for captured mon
+	;Gain Experience for capturing mon
+	;Set all EXP flags to true and unsets EXP. ALL
+	ld a, $ff
+	ld [wPartyGainExpFlags], a
+	ld a, 0
+	ld [wBoostExpByExpAll], a
 	callab GainExperience
 	scf ; set carry
 	ret

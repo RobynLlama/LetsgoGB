@@ -3,11 +3,6 @@ GainExperience:
 	cp LINK_STATE_BATTLING
 	ret z ; return if link battle
 	
-	;Set all EXP flags to true
-	;TODO: Decide if we should test for BATTLE_TYPE_SAFARI here or not
-	ld a, $ff
-	ld [wPartyGainExpFlags], a
-	
 	call DivideExpDataByNumMonsGainingExp
 	ld hl, wPartyMon1
 	xor a
