@@ -984,8 +984,9 @@ OaksLabText5:
 	ld b, POKE_BALL
 	call IsItemInBag
 	jr nz, .asm_1d2e7
-	CheckEvent EVENT_BEAT_ROUTE22_RIVAL_1ST_BATTLE
-	jr nz, .asm_1d2d0
+	;Move pokeballs from beating rival to delivering parcel.
+	;CheckEvent EVENT_BEAT_ROUTE22_RIVAL_1ST_BATTLE
+	;jr nz, .asm_1d2d0
 	CheckEvent EVENT_GOT_POKEDEX
 	jr nz, .asm_1d2c8
 	CheckEventReuseA EVENT_BATTLED_RIVAL_IN_OAKS_LAB
@@ -1013,19 +1014,23 @@ OaksLabText5:
 	call OaksLabScript_RemoveParcel
 	ld a, $f
 	ld [wOaksLabCurScript], a
+	lb bc, GREAT_BALL, 12
+	call GiveItem
+	ld hl, OaksLabGivePokeballsText
+	call PrintText
 	jr .asm_1d2ed
 .asm_1d2c8
 	ld hl, OaksLabAroundWorldText
 	call PrintText
 	jr .asm_1d2ed
-.asm_1d2d0
-	CheckAndSetEvent EVENT_GOT_POKEBALLS_FROM_OAK
-	jr nz, .asm_1d2e7
-	lb bc, POKE_BALL, 5
-	call GiveItem
-	ld hl, OaksLabGivePokeballsText
-	call PrintText
-	jr .asm_1d2ed
+;.asm_1d2d0
+	;CheckAndSetEvent EVENT_GOT_POKEBALLS_FROM_OAK
+	;jr nz, .asm_1d2e7
+	;lb bc, POKE_BALL, 5
+	;call GiveItem
+	;ld hl, OaksLabGivePokeballsText
+	;call PrintText
+	;jr .asm_1d2ed
 .asm_1d2e7
 	ld hl, OaksLabPleaseVisitText
 	call PrintText
