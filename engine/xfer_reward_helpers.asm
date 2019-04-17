@@ -64,6 +64,14 @@ GetXferReward:
 	jr nz, .GiveReward
 
 .DoneRewards
+	;Always give at least a ball back
+	ld hl, wNumBagItems
+	ld a, GREAT_BALL
+	ld [wcf91], a
+	ld a, 1
+	ld [wItemQuantity], a
+	call AddItemToInventory
+	
 	ret
 	
 ; Reward Table
