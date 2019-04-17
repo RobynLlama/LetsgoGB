@@ -839,6 +839,11 @@ OaksLabText39:
 	db "@"
 
 OaksLabScript_1d157:
+	;Short-circuit if we picked the "wrong" ball
+	ld a, [wSpriteIndex]
+	cp $3
+	jr nz, OaksLabLookAtCharmander
+
 	ld a, $5
 	ld [H_SPRITEINDEX], a
 	ld a, $9
@@ -859,16 +864,12 @@ OaksLabScript_1d157:
 	call ReloadMapData
 	ld c, 10
 	call DelayFrames
-	ld a, [wSpriteIndex]
-	cp $2
-	jr z, OaksLabLookAtCharmander
-	cp $3
-	jr z, OaksLabLookAtSquirtle
-	jr OaksLabLookAtBulbasaur
+	jr OaksLabLookAtSquirtle
 
 OaksLabLookAtCharmander:
 	ld hl, OaksLabCharmanderText
-	jr OaksLabMonChoiceMenu
+	call PrintText
+	jp TextScriptEnd
 OaksLabCharmanderText:
 	TX_FAR _OaksLabCharmanderText
 	db "@"
@@ -985,8 +986,8 @@ OaksLabText5:
 	call IsItemInBag
 	jr nz, .asm_1d2e7
 	;Move pokeballs from beating rival to delivering parcel.
-	;CheckEvent EVENT_BEAT_ROUTE22_RIVAL_1ST_BATTLE
-	;jr nz, .asm_1d2d0
+	CheckEvent EVENT_BEAT_ROUTE22_RIVAL_1ST_BATTLE
+	jr nz, .asm_1d2d0
 	CheckEvent EVENT_GOT_POKEDEX
 	jr nz, .asm_1d2c8
 	CheckEventReuseA EVENT_BATTLED_RIVAL_IN_OAKS_LAB
@@ -1023,9 +1024,9 @@ OaksLabText5:
 	ld hl, OaksLabAroundWorldText
 	call PrintText
 	jr .asm_1d2ed
-;.asm_1d2d0
-	;CheckAndSetEvent EVENT_GOT_POKEBALLS_FROM_OAK
-	;jr nz, .asm_1d2e7
+.asm_1d2d0
+	CheckAndSetEvent EVENT_GOT_POKEBALLS_FROM_OAK
+	jr .asm_1d2e7
 	;lb bc, POKE_BALL, 5
 	;call GiveItem
 	;ld hl, OaksLabGivePokeballsText

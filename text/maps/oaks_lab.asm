@@ -26,21 +26,16 @@ _OaksLabText39::
 	done
 
 _OaksLabCharmanderText::
-	text "So! You want the"
-	line "fire #MON,"
-	cont "CHARMANDER?"
+	text "Not this one"
 	done
 
 _OaksLabSquirtleText::
-	text "So! You want the"
-	line "water #MON,"
-	cont "SQUIRTLE?"
+	text "Will you take"
+	line "the #ball?"
 	done
 
 _OaksLabBulbasaurText::
-	text "So! You want the"
-	line "plant #MON,"
-	cont "BULBASAUR?"
+	text "Not this one"
 	done
 
 _OaksLabMonEnergeticText::
@@ -124,7 +119,7 @@ _OaksLabGivePokeballsText1::
 	cont "#MON."
 
 	para "<PLAYER> got 12"
-	line "# BALLs!@@"
+	line "#BALLs!@@"
 
 _OaksLabGivePokeballsText2::
 	text ""
