@@ -123,7 +123,7 @@ _OaksLabGivePokeballsText1::
 	cont "to capture wild"
 	cont "#MON."
 
-	para "<PLAYER> got 5"
+	para "<PLAYER> got 12"
 	line "# BALLs!@@"
 
 _OaksLabGivePokeballsText2::
@@ -133,8 +133,7 @@ _OaksLabGivePokeballsText2::
 	cont "it's fair game."
 
 	para "Just throw a #"
-	line "BALL at it and try"
-	line "to catch it!"
+	line "BALL at it!"
 
 	para "This won't always"
 	line "work, though."
