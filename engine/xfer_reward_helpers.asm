@@ -28,30 +28,28 @@ GetXferReward:
 	;this is where we load the level from the mon data
 	ld c, [hl]
 	
+	;Eventually we're gonna add bonus rolls for higher-level mons or something
+	;But for now everyone gets 2 rolls per mon.
+	ld c, $02
+	
 	;Now we get to generate rewards :]
+	;Re-write number 3 :]]]]]
 .GiveReward
 	;Load reward table
 	ld hl, RewardItemsTable
 	;get a random number
 	call Random
-	;clamp it to 64
-	and %00111111
-	;Stuff it into b and prepare DE
-	ld b, a
-	;clear carry
-	xor a
-	;Check if its an item reward
-	ld a, 41
-	cp b
-	jr nc, .CheckDone
-	;Add Reward
-	;Remove blank slots
-	ld a, b
-	ld b, 40
-	;Subtract the first 40 blanks from the table
-	sub b
-	;Load reward table
+	;clamp it to 32
+	and %00011111
+	
+	;Load reward table pointer
 	ld hl, RewardItemsTable
+	;Increase pointer by the random number
+	ld e, a
+	ld d, $00
+	add hl, de
+	
+	;load the reward
 	ld a, [hl]
 	;Add to inventory
 	ld hl, wNumBagItems
@@ -76,31 +74,45 @@ GetXferReward:
 	
 ; Reward Table
 RewardItemsTable:
-	; ~62% nothing
-	; ~28% : 41 - 58: Basic Reward
+	;~21.8% GREAT_BALL
 	db GREAT_BALL
 	db GREAT_BALL
 	db GREAT_BALL
 	db GREAT_BALL
 	db GREAT_BALL
+	db GREAT_BALL
+	db GREAT_BALL
+	;25% POTION
 	db POTION
 	db POTION
 	db POTION
 	db POTION
 	db POTION
 	db POTION
+	db POTION
+	db POTION
+	;~15.6% REPEL
 	db REPEL
 	db REPEL
 	db REPEL
 	db REPEL
+	db REPEL
+	;~9.3% SUPER_REPEL
+	db SUPER_REPEL
+	db SUPER_REPEL
+	db SUPER_REPEL
+	;~9.3% SUPER_POTION
 	db SUPER_POTION
 	db SUPER_POTION
 	db SUPER_POTION
-	; ~9% : 59 - 64: Super Reward
+	;6.25% HYPER_POTION
 	db HYPER_POTION
 	db HYPER_POTION
+	;6.25% RARE_CANDY
 	db RARE_CANDY
 	db RARE_CANDY
+	;~3% MOON_STONE
 	db MOON_STONE
+	;~3% NUGGET
 	db NUGGET
 	
