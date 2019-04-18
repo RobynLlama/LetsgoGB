@@ -67,20 +67,9 @@ GaryScript2:
 	ld a, OPP_SONY3
 	ld [wCurOpponent], a
 
-	; select which team to use during the encounter
-	ld a, [wRivalStarter]
-	cp STARTER2
-	jr nz, .NotStarter2
-	ld a, $1
-	jr .saveTrainerId
-.NotStarter2
-	cp STARTER3
-	jr nz, .NotStarter3
-	ld a, $2
-	jr .saveTrainerId
-.NotStarter3
-	ld a, $3
-.saveTrainerId
+	;Load the rival team
+	ld a, [wRivalTeamOff]
+	add $01
 	ld [wTrainerNo], a
 
 	xor a

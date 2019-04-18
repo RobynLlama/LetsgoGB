@@ -185,20 +185,12 @@ SilphCo7Script3:
 	call SaveEndBattleTextPointers
 	ld a, OPP_SONY2
 	ld [wCurOpponent], a
-	ld a, [wRivalStarter]
-	cp STARTER2
-	jr nz, .asm_51cb6
-	ld a, $7
-	jr .asm_51cc0
-.asm_51cb6
-	cp STARTER3
-	jr nz, .asm_51cbe
-	ld a, $8
-	jr .asm_51cc0
-.asm_51cbe
-	ld a, $9
-.asm_51cc0
+	
+	;Load the rival team
+	ld a, [wRivalTeamOff]
+	add $07
 	ld [wTrainerNo], a
+	
 	ld a, $4
 	jp SilphCo7Text_51c10
 

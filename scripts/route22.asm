@@ -292,8 +292,14 @@ Route22Script4:
 	call SaveEndBattleTextPointers
 	ld a, OPP_SONY2
 	ld [wCurOpponent], a
-	ld hl, StarterMons_510d9
-	call Route22Script_50ed6
+	;ld hl, StarterMons_510d9
+	;call Route22Script_50ed6
+	
+	;Load the rival team
+	ld a, [wRivalTeamOff]
+	add $0a
+	ld [wTrainerNo], a
+	
 	ld a, $5
 	ld [wRoute22CurScript], a
 	ret
