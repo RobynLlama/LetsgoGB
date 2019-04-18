@@ -2915,6 +2915,11 @@ wGameProgressFlagsEnd::
 
 	ds 56
 
+;Rival Team Offset - D6F0
+;offset all data past this point by +1
+wRivalTeamOff::
+	ds 1
+
 wObtainedHiddenItemsFlags::
 	ds 14
 

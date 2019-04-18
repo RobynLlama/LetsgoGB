@@ -133,17 +133,20 @@ Route22Script1:
 	call SaveEndBattleTextPointers
 	ld a, OPP_SONY1
 	ld [wCurOpponent], a
-	ld hl, StarterMons_50faf
-	call Route22Script_50ed6
+	;Obsoleted
+	;ld hl, StarterMons_50faf
+	;call Route22Script_50ed6
+	
+	;Determine the Trainer No for this fight
+	;Load the rival team offset and add the base offset
+	ld a, [wRivalTeamOff]
+	add $4
+	;Move that into wTrainerNo
+	ld [wTrainerNo], a
+	
 	ld a, $2
 	ld [wRoute22CurScript], a
 	ret
-
-StarterMons_50faf:
-; starter the rival picked, rival trainer number
-	db STARTER2,$04
-	db STARTER3,$05
-	db STARTER1,$06
 
 Route22Script2:
 	ld a, [wIsInBattle]

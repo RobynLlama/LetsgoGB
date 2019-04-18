@@ -318,11 +318,30 @@ OaksLabScript9:
 	ld [wMissableObjectIndex], a
 	predef HideObject
 	call Delay3
-	ld a, [wRivalStarterTemp]
+	;Change starter based on version
+	IF DEF(_RED)
+	ld a, PIKACHU
+	ENDC
+	IF DEF(_BLUE)
+	ld a, EEVEE
+	ENDC
 	ld [wRivalStarter], a
 	ld [wcf91], a
 	ld [wd11e], a
 	call GetMonName
+	
+	;Pick and save the rival's team offset
+	call Random
+	and %00000011
+	
+	;only 0-2 are needed
+	cp $3
+	jp nz, .RivalTeamDone
+	dec a
+	
+.RivalTeamDone
+	ld [wRivalTeamOff], a
+	
 	ld a, $1
 	ld [H_SPRITEINDEX], a
 	ld a, SPRITE_FACING_UP
