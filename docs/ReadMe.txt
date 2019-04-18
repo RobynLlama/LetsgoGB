@@ -1,11 +1,19 @@
 PokemonRedGo Project ReadMe
 Table of Contents
+	[Section 0]		Starter Mons
 	[Section 1] 	Safari Game Mode
 	[Section 1-1] 	Imposter Battles
 	[Section 2] 	Earning Experience and Money
 	[Section 3] 	Pokeball Update
 	[Section 4] 	Known Issues
-	[Section 5] 	See Also
+	[Section Z] 	See Also / Whatever
+	
+Section 0: Starter Mons
+	You are restricted to only choose the middle starter. LetsGoEeveeGB gets Eevee and
+	LetsGoPikachuGB predictably gets Pikachu. Your rival will get the opposite mon you
+	do and each time you start a new game he will pick a different party to use with
+	Pikachu or a different Eeveelution for his Eevee. (There are only 3 parties he can
+	choose from so don't be surprised to see the same one across multiple games)
 	
 Section 1: Safari Game Mode
 	All wild battles are now done in the Safari Game Mode style. The BALL option is now
@@ -22,12 +30,11 @@ Section 1-1: Imposter Battles
 	
 Section 2: Earning Experience and Money
 	When catching a wild pokemon all pokemon in your party will gain split XP as though
-	EXP ALL were in effect. Trainer battles work the same as usual. The RELEASE option
+	the party size were 3. Trainer battles work the same as usual. The RELEASE option
 	in pokecenter boxes has been replaced with TRANSFER which gives the selected pokemon
 	to Prof Oak in exchange for a random selection of items. There is currently no text
-	prompt for what goodies you got but hopefully I can change that in the future. Making
-	the system work as well as it does was really stressful so I just moved on to other
-	features.
+	prompt for what goodies you got but hopefully I can change that in the future. You
+	are always guaranteed at 1 ball returned from a TRANSFER.
 	
 Section 3: Pokeball Update
 	Great Balls are actually re-named to Poke ball because I like it better. They are still
@@ -35,24 +42,24 @@ Section 3: Pokeball Update
 	been removed from the game (including the master ball) which means, at present, there
 	is no system in place to improve your capture rate except the awful BAIT and ROCK
 	options that really suck, seriously, you should probably not use them on anything you
-	actually want to catch.
+	actually want to catch. 
 	
 Section 4: Known Issues
 	Legendary Pokemon can flee just like anything else which will clear them from the map.
 	Always save before trying to capture a legendary. This will be addressed in a future
 	update.
 	
-	When naming a caught pokemon the party will receive experience but the game will load
-	the EXP ALL text which it is supposed to ignore. I haven't actually excised this item
-	from the game yet so don't use it if you get it from Oak's Aide and ignore the text
-	that states EXP ALL is sharing experience after naming a caught pokemon.
+	I haven't actually removed the EXP ALL from the game yet so don't get it. If you do,
+	the experience formula might break and also your save will break in a future update
+	when I actually remove it.
 	
 	If the player has a free slot for a newly captured pokemon it will reward itself with
 	experience points for its own capture. Yea.. that's weird. I know where the flags are
-	but I'm currently using a jenky method to make experience work so this is a bit of a 
-	re-write of that @_@
+	but I'm currently using a jenky method to make experience work so deal with it.
 	
 Section 5: See Also
 	Project Home: https://github.com/Crunchepillar/PokeRedGo/ (report bugs and send me heart emojis)
 	Also check out the CoolPeoples.md (its a text file)
+	Note: 	Saves from regular Red/Blue will not work. I changed the SRAM so it will just say that
+			your save is corrupted :[
 	
