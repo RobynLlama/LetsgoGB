@@ -6,7 +6,8 @@
 
 # no binaries
 *.exe
-ClearCache.bat
+# no batch
+*.bat
 
 # roms
 *.gbc
