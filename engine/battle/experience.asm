@@ -307,6 +307,8 @@ DivideExpDataByNumMonsGainingExp:
 	jr nz, .countSetBitsLoop
 	cp $2
 	ret c ; return if only one mon is gaining exp
+	;Always halve XP before sharing. Bigger parties = Better
+	ld a, $02
 	ld [wd11e], a ; store number of mons gaining exp
 	ld hl, wEnemyMonBaseStats
 	ld c, wEnemyMonBaseExp + 1 - wEnemyMonBaseStats
