@@ -1,0 +1,30 @@
+;Load catch rate
+wEnemyMonCatchRate
+
+;Add up to 50 total rate from progression
+Badges contribute up to: 32
+wObtainedBadges
+	0:+4	Boulderbadge
+	1:+4	Cascadebadge
+	2:+4	Thunderbadge
+	3:+5	Rainbowbadge
+	4:+5	Soulbadge
+	5:+5	Marshbadge
+	6:+5	Volcanobadge
+	7:+5	Earthbadge
+
+Pokedex Completion Rate contributes up to: 18
+	;Load pointers
+	ld hl, wPokedexOwned
+	ld b, wPokedexOwnedEnd - wPokedexOwned
+	;Count bits
+	call CountSetBits
+	ld a, [wNumSetBits]
+	;Shift a right 3 times
+	rra
+	rra
+	rra
+	
+;Subtract Rate from 1/2 pokemon level
+wEnemyMonLevel
+rra
