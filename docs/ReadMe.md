@@ -40,7 +40,7 @@ the party size were 3. Trainer battles work the same as usual. The RELEASE optio
 in pokecenter boxes has been replaced with TRANSFER which gives the selected pokemon
 to Prof Oak in exchange for a random selection of items. There is currently no text
 prompt for what goodies you got but hopefully I can change that in the future. You
-are always guaranteed at 1 ball returned from a TRANSFER.
+are always guaranteed at least 1 ball returned from a TRANSFER.
 
 ## Pokeball Update
 Great Balls are actually re-named to Poke ball because I like it better. They are still
