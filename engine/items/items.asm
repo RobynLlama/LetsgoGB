@@ -282,7 +282,7 @@ ItemUseBall:
 .failedToCapture
 	;TODO: Make this less garbage
 	;increase escape factor when breaking free from a ball
-	ld hl [wSafariEscapeFactor]
+	ld hl, wSafariEscapeFactor
 	inc [hl]
 	
 	ld a, [H_QUOTIENT + 3]
