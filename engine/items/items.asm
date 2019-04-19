@@ -247,31 +247,39 @@ ItemUseBall:
 	
 .Skip255
 	ld b, $FF
-	jr .NextCapture
 	
 .NextCapture
 	ld a, [wEnemyMonLevel]
 	rra
 	;a contains enemy level divided by 2
 	;enforce minimum of 1 level here? Easy jr; see if I need to when testing
-	ld b, a
-	ld a, d
-	;b is enemy level div 2, a is sum
+	ld d, b ;D is the sum
+	ld b, a ;B is enemy level mod
+	ld a, d ;A is the sum
 	sub b
-	;Subtract and check carry flag for underflow
+	;A is the sum - LvlMod
+	;Check for underflow
 	jr nc, .CaptureCheck
 	;Minimum catch rate is set to 3/255
 	ld a, $03
 	
 .CaptureCheck
 	ld d, a
-	;d is our sum
+	;D is the computed catch rate
+	
+	;DEBUG Shunt sum into wSafariSteps2
+	ld [$D70E], a
+	
 	call Random ;This uses ab as a 16bit reg
-	;Get a random number
+	;Get a random number. A is RNG
+	
+	;DEBUG: Shunt RNG into wSafariSteps
+	ld [$D70D], a
+	
 	cp d
 	;if RNG A is lower than CatchRate D
 	;IE d / 255 chance of catching the mon
-	jr nc, .captured
+	jr c, .captured
 	jr .failedToCapture
 	
 .captured
