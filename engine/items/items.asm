@@ -267,14 +267,8 @@ ItemUseBall:
 	ld d, a
 	;D is the computed catch rate
 	
-	;DEBUG Shunt sum into wSafariSteps2
-	ld [$D70E], a
-	
 	call Random ;This uses ab as a 16bit reg
 	;Get a random number. A is RNG
-	
-	;DEBUG: Shunt RNG into wSafariSteps
-	ld [$D70D], a
 	
 	cp d
 	;if RNG A is lower than CatchRate D
