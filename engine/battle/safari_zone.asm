@@ -11,7 +11,7 @@ PrintSafariZoneBattleText:
 	ld a, [hl]
 	and a
 	ret z
-	dec [hl]
+	;dec [hl]
 	ld hl, SafariZoneAngryText
 	jr nz, .asm_429f
 	push hl
