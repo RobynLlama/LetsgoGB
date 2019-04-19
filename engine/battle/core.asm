@@ -304,27 +304,45 @@ StartBattle:
 	ld a, [wEnemyMonSpeed + 1]
 	add a
 	ld b, a ; init b (which is later compared with random value) to (enemy speed % 256) * 2
-	jp c, EnemyRan ; if (enemy speed % 256) > 127, the enemy runs
-	ld a, [wSafariBaitFactor]
-	and a ; is bait factor 0?
-	jr z, .checkEscapeFactor
+	;jp c, EnemyRan ; if (enemy speed % 256) > 127, the enemy runs
+	;ld a, [wSafariBaitFactor]
+	;and a ; is bait factor 0?
+	;jr z, .checkEscapeFactor
 ; bait factor is not 0
 ; divide b by 4 (making the mon less likely to run)
-	srl b
-	srl b
+	;srl b
+	;srl b
 .checkEscapeFactor
+;B is EnemySpeedMod
 	ld a, [wSafariEscapeFactor]
+	ld c, a ;C is escape factor
 	and a ; is escape factor 0?
 	jr z, .compareWithRandomValue
 ; escape factor is not 0
-; multiply b by 2 (making the mon more likely to run)
-	sla b
-	jr nc, .compareWithRandomValue
-; cap b at 255
-	ld b, $ff
+; Add in a portion of the mon's base speed to increase flee rate
+.MultEscapeFact
+	ld hl, wEnemyMonBaseStats
+	inc hl
+	inc hl
+	inc hl
+	ld a, [hl] ;Currently 1/8 base speed per EF but it is increased again if a ball fails so that's 1/4 per turn
+	rra
+	rra
+	rra
+	add b
+	jr c, EnemyRan ;Enemy runs at 255+ flee rate
+	ld b, a ;B is total flee rate
+	dec c ;Decrease counter
+	jr nz, .MultEscapeFact ;keep going until we reach 0
+	jr .compareWithRandomValue
 .compareWithRandomValue
 	call Random
 	cp b
+	
+	;Increase Escape Factor each turn
+	ld hl, wSafariEscapeFactor
+	inc [hl]
+	
 	jp nc, .checkAnyPartyAlive
 	jr EnemyRan ; if b was greater than the random value, the enemy runs
 
@@ -2331,9 +2349,10 @@ DisplayBattleMenu:
 	jr nz, BagWasSelected
 
 ; bait was selected
-	ld a, SAFARI_BAIT
-	ld [wcf91], a
-	jr UseBagItem
+	;ld a, SAFARI_BAIT
+	;ld [wcf91], a
+	;jr UseBagItem
+	jp DisplayBattleMenu
 
 BagWasSelected:
 	call LoadScreenTilesFromBuffer1
@@ -2459,9 +2478,10 @@ PartyMenuOrRockOrRun:
 	cp BATTLE_TYPE_SAFARI
 	jr nz, .partyMenuWasSelected
 ; safari battle
-	ld a, SAFARI_ROCK
-	ld [wcf91], a
-	jp UseBagItem
+	;ld a, SAFARI_ROCK
+	;ld [wcf91], a
+	;jp UseBagItem
+	jp DisplayBattleMenu
 .partyMenuWasSelected
 	call LoadScreenTilesFromBuffer1
 	xor a ; NORMAL_PARTY_MENU

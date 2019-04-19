@@ -280,6 +280,11 @@ ItemUseBall:
 	jr .skipShakeCalculations
 
 .failedToCapture
+	;TODO: Make this less garbage
+	;increase escape factor when breaking free from a ball
+	ld hl [wSafariEscapeFactor]
+	inc [hl]
+	
 	ld a, [H_QUOTIENT + 3]
 	ld [wPokeBallCaptureCalcTemp], a ; Save X.
 
@@ -1412,11 +1417,12 @@ VitaminText:
 ItemUseBait:
 	ld hl, ThrewBaitText
 	call PrintText
-	ld hl, wEnemyMonCatchRate ; catch rate
-	srl [hl] ; halve catch rate
+	ret
+	;ld hl, wEnemyMonCatchRate ; catch rate
+	;srl [hl] ; halve catch rate
 	ld a, BAIT_ANIM
 	ld hl, wSafariBaitFactor ; bait factor
-	ld de, wSafariEscapeFactor ; escape factor
+	ld de, wSafariBaitFactor ; DEBUG
 	jr BaitRockCommon
 
 ItemUseRock:
@@ -1451,7 +1457,7 @@ BaitRockCommon:
 	jr nc, .noCarry
 	ld a, $ff
 .noCarry
-	ld [hl], a
+	;ld [hl], a
 	predef MoveAnimation ; do animation
 	ld c, 70
 	jp DelayFrames
