@@ -167,153 +167,115 @@ ItemUseBall:
 ; Pokémon can't be caught and skip the capture calculations.
 	ld a, [wCurMap]
 	cp POKEMONTOWER_6
-	jr nz, .loop
+	jr nz, .CaptureStart
 	ld a, [wEnemyMonSpecies2]
 	cp MAROWAK
 	ld b, $10 ; can't be caught value
 	jp z, .setAnimData
 
-; Get the first random number. Let it be called Rand1.
-; Rand1 must be within a certain range according the kind of ball being thrown.
-; The ranges are as follows.
-; Poké Ball:         [0, 255]
-; Great Ball:        [0, 200]
-; Ultra/Safari Ball: [0, 150]
-; Loop until an acceptable number is found.
-
-.loop
-	call Random
-	ld b, a
-
-; Get the item ID.
-	ld hl, wcf91
-	ld a, [hl]
-
-; The Master Ball always succeeds.
-	cp MASTER_BALL
-	jp z, .captured
-
-; Anything will do for the basic Poké Ball.
-	cp POKE_BALL
-	jr z, .checkForAilments
-
-; If it's a Great/Ultra/Safari Ball and Rand1 is greater than 200, try again.
-	ld a, 200
-	cp b
-	jr c, .loop
-
-; Less than or equal to 200 is good enough for a Great Ball.
-	ld a, [hl]
-	cp GREAT_BALL
-	jr z, .checkForAilments
-
-; If it's an Ultra/Safari Ball and Rand1 is greater than 150, try again.
-	ld a, 150
-	cp b
-	jr c, .loop
-
-.checkForAilments
-; Pokémon can be caught more easily with a status ailment.
-; Depending on the status ailment, a certain value will be subtracted from
-; Rand1. Let this value be called Status.
-; The larger Status is, the more easily the Pokémon can be caught.
-; no status ailment:     Status = 0
-; Burn/Paralysis/Poison: Status = 12
-; Freeze/Sleep:          Status = 25
-; If Status is greater than Rand1, the Pokémon will be caught for sure.
-	ld a, [wEnemyMonStatus]
-	and a
-	jr z, .skipAilmentValueSubtraction ; no ailments
-	and 1 << FRZ | SLP
-	ld c, 12
-	jr z, .notFrozenOrAsleep
-	ld c, 25
-.notFrozenOrAsleep
-	ld a, b
-	sub c
-	jp c, .captured
-	ld b, a
-
-.skipAilmentValueSubtraction
-	push bc ; save (Rand1 - Status)
-
-; Calculate MaxHP * 255.
-	xor a
-	ld [H_MULTIPLICAND], a
-	ld hl, wEnemyMonMaxHP
-	ld a, [hli]
-	ld [H_MULTIPLICAND + 1], a
-	ld a, [hl]
-	ld [H_MULTIPLICAND + 2], a
-	ld a, 255
-	ld [H_MULTIPLIER], a
-	call Multiply
-
-; Determine BallFactor. It's 8 for Great Balls and 12 for the others.
-	ld a, [wcf91]
-	cp GREAT_BALL
-	ld a, 12
-	jr nz, .skip1
-	ld a, 8
-
-.skip1
-; Note that the results of all division operations are floored.
-
-; Calculate (MaxHP * 255) / BallFactor.
-	ld [H_DIVISOR], a
-	ld b, 4 ; number of bytes in dividend
-	call Divide
-
-; Divide the enemy's current HP by 4. HP is not supposed to exceed 999 so
-; the result should fit in a. If the division results in a quotient of 0,
-; change it to 1.
-	ld hl, wEnemyMonHP
-	ld a, [hli]
-	ld b, a
-	ld a, [hl]
-	srl b
-	rr a
-	srl b
-	rr a
-	and a
-	jr nz, .skip2
-	inc a
-
-.skip2
-; Let W = ((MaxHP * 255) / BallFactor) / max(HP / 4, 1). Calculate W.
-	ld [H_DIVISOR], a
-	ld b, 4
-	call Divide
-
-; If W > 255, store 255 in [H_QUOTIENT + 3].
-; Let X = min(W, 255) = [H_QUOTIENT + 3].
-	ld a, [H_QUOTIENT + 2]
-	and a
-	jr z, .skip3
-	ld a, 255
-	ld [H_QUOTIENT + 3], a
-
-.skip3
-	pop bc ; b = Rand1 - Status
-
-; If Rand1 - Status > CatchRate, the ball fails to capture the Pokémon.
+.CaptureStart
+	; New Catch Formula; WIP
 	ld a, [wEnemyMonCatchRate]
-	cp b
-	jr c, .failedToCapture
-
-; If W > 255, the ball captures the Pokémon.
-	ld a, [H_QUOTIENT + 2]
-	and a
-	jr nz, .captured
-
-	call Random ; Let this random number be called Rand2.
-
-; If Rand2 > X, the ball fails to capture the Pokémon.
 	ld b, a
-	ld a, [H_QUOTIENT + 3]
+	
+	;Sanity
 	cp b
-	jr c, .failedToCapture
+	jr z, .Skip255
+	
+	;Calc badge bonuses (Up to +32)
+	ld a, [wObtainedBadges]
+	ld d, a
+	rr d
+	jr nc, .NoBouldBadge
+	add $04
+.NoBouldBadge
+	rr d
+	jr nc, .NoCascBadge
+	add $04
+.NoCascBadge
+	rr d
+	jr nc, .NoThunBadge
+	add $04
+.NoThunBadge
+	rr d
+	jr nc, .NoRainBadge
+	add $05
+.NoRainBadge
+	rr d
+	jr nc, .NoSoulBadge
+	add $05
+.NoSoulBadge
+	rr d
+	jr nc, .NoMarshBadge
+	add $05
+.NoMarshBadge
+	rr d
+	jr nc, .NoVolcBadge
+	add $05
+.NoVolcBadge
+	rr d
+	jr nc, .NoEartBadge
+	add $05
+.NoEartBadge
 
+	;Add badge bonus
+	add b
+	;stop adding if we break 255
+	jr c, .Skip255
+	
+	ld d, a ;d contains the sum so far
+
+	;Pokedex completion bonus
+	ld hl, wPokedexOwned
+	ld b, wPokedexOwnedEnd - wPokedexOwned
+	;Count bits
+	call CountSetBits
+	ld a, [wNumSetBits]
+	;Shift a right 3 times
+	rra
+	rra
+	rra
+	;a contains the number of owned pokemon div 8
+	
+	ld b, d ;b contains the sum so far
+	
+	;Add completion bonus
+	add b
+	;stop adding if we break 255
+	jr c, .Skip255
+	jr .NextCapture
+	
+.Skip255
+	ld b, $FF
+	
+.NextCapture
+	ld a, [wEnemyMonLevel]
+	rra
+	;a contains enemy level divided by 2
+	;enforce minimum of 1 level here? Easy jr; see if I need to when testing
+	ld d, b ;D is the sum
+	ld b, a ;B is enemy level mod
+	ld a, d ;A is the sum
+	sub b
+	;A is the sum - LvlMod
+	;Check for underflow
+	jr nc, .CaptureCheck
+	;Minimum catch rate is set to 3/255
+	ld a, $03
+	
+.CaptureCheck
+	ld d, a
+	;D is the computed catch rate
+	
+	call Random ;This uses ab as a 16bit reg
+	;Get a random number. A is RNG
+	
+	cp d
+	;if RNG A is lower than CatchRate D
+	;IE d / 255 chance of catching the mon
+	jr c, .captured
+	jr .failedToCapture
+	
 .captured
 	jr .skipShakeCalculations
 
