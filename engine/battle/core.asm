@@ -2460,9 +2460,10 @@ PartyMenuOrRockOrRun:
 	cp BATTLE_TYPE_SAFARI
 	jr nz, .partyMenuWasSelected
 ; safari battle
-	ld a, SAFARI_ROCK
-	ld [wcf91], a
-	jp UseBagItem
+	;ld a, SAFARI_ROCK
+	;ld [wcf91], a
+	;jp UseBagItem
+	jp DisplayBattleMenu
 .partyMenuWasSelected
 	call LoadScreenTilesFromBuffer1
 	xor a ; NORMAL_PARTY_MENU
