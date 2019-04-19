@@ -310,8 +310,8 @@ StartBattle:
 	jr z, .checkEscapeFactor
 ; bait factor is not 0
 ; divide b by 4 (making the mon less likely to run)
-	srl b
-	srl b
+	;srl b
+	;srl b
 .checkEscapeFactor
 	ld a, [wSafariEscapeFactor]
 	and a ; is escape factor 0?
@@ -2331,9 +2331,10 @@ DisplayBattleMenu:
 	jr nz, BagWasSelected
 
 ; bait was selected
-	ld a, SAFARI_BAIT
-	ld [wcf91], a
-	jr UseBagItem
+	;ld a, SAFARI_BAIT
+	;ld [wcf91], a
+	;jr UseBagItem
+	jp DisplayBattleMenu
 
 BagWasSelected:
 	call LoadScreenTilesFromBuffer1
