@@ -32,9 +32,6 @@ GetXferReward:
 	;Load level from box struct
 	ld a, [hl]
 	
-	;DEBUG: Move level to our second favorite addy
-	ld [$D70E], a
-	
 	;Base value is 1 reward
 	ld c, $01
 	
@@ -47,14 +44,9 @@ GetXferReward:
 	
 	;same but for 50
 	cp 50
-	jr c, .NoBonus50
+	jr c, .GiveReward
 	;Bonus reward
 	inc c
-.NoBonus50
-
-	;DEBUG: Move the total reward amount to our favorite memory addy
-	ld a, c
-	ld [$D70D], a
 	
 	;Now we get to generate rewards :]
 	;Re-write number 3 :]]]]]
