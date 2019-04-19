@@ -2,9 +2,13 @@
 ;[wWhichPokemon] = selected mon slot Id
 ;add 33 for each mon past the first
 GetXferReward:
-	;Just jump to $da99 if its 0
+	;Just jump to first one if its 0
 	ld a, [wWhichPokemon] ;cf92
-	ld hl, $da99
+	;This can't be hardcoded anymore
+	ld hl, wNumInBox
+	;Add offset to level data
+	ld de, $0019
+	add hl, de
 	cp 0
 	jr z, .DoneMath1
 	
@@ -25,12 +29,24 @@ GetXferReward:
 	jr nz, .AddLoop
 	
 .DoneMath1
-	;this is where we load the level from the mon data
-	ld c, [hl]
+	;Load level from box struct
+	ld a, [hl]
 	
-	;Eventually we're gonna add bonus rolls for higher-level mons or something
-	;But for now everyone gets 2 rolls per mon.
-	ld c, $02
+	;Base value is 1 reward
+	ld c, $01
+	
+	;Is level higher than 25
+	cp 25
+	jr c, .NoBonus25
+	;Bonus reward
+	inc c
+.NoBonus25
+	
+	;same but for 50
+	cp 50
+	jr c, .GiveReward
+	;Bonus reward
+	inc c
 	
 	;Now we get to generate rewards :]
 	;Re-write number 3 :]]]]]
