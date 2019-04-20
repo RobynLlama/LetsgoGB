@@ -1,4 +1,4 @@
-# Version 0.2.0
+# Version 0.2.0 "Mechanics Overhaul"
 ## The "Fix and balance safari mode" update
 Release Notes:
 * Version flags and rom names have been normalized to "LetsGoEeveeGB" and "LetsGoPikachuGB"
