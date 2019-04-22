@@ -1,4 +1,5 @@
 ApplyOutOfBattlePoisonDamage:
+	;Add new StepTracker here or in daycare
 	ld a, [wd730]
 	add a
 	jp c, .noBlackOut ; no black out if joypad states are being simulated

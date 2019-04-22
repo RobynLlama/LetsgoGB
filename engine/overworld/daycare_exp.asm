@@ -1,4 +1,5 @@
 IncrementDayCareMonExp:
+	;add new tracker here or in poison
 	ld a, [wDayCareInUse]
 	and a
 	ret z
