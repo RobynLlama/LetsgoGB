@@ -37,11 +37,11 @@ StrengthsAndWeaknessesText:
 	db "@"
 
 SafariZoneCheck:
-	CheckEventHL EVENT_IN_SAFARI_ZONE ; if we are not in the Safari Zone,
-	jr z, SafariZoneGameStillGoing ; don't bother printing game over text
-	ld a, [wNumSafariBalls]
-	and a
-	jr z, SafariZoneGameOver
+	;CheckEventHL EVENT_IN_SAFARI_ZONE ; if we are not in the Safari Zone,
+	;jr z, SafariZoneGameStillGoing ; don't bother printing game over text
+	;ld a, [wNumSafariBalls]
+	;and a
+	;jr z, SafariZoneGameOver
 	jr SafariZoneGameStillGoing
 
 SafariZoneCheckSteps:
@@ -98,13 +98,10 @@ PrintSafariGameOverText:
 
 SafariGameOverText:
 	TX_ASM
-	ld a, [wNumSafariBalls]
-	and a
-	jr z, .noMoreSafariBalls
+	;ld a, [wNumSafariBalls]
+	;and a
+	;jr z, .noMoreSafariBalls
 	ld hl, TimesUpText
-	call PrintText
-.noMoreSafariBalls
-	ld hl, GameOverText
 	call PrintText
 	jp TextScriptEnd
 

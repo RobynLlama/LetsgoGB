@@ -99,6 +99,10 @@ SpecialEffectsCont:
 	db -1
 
 SlidePlayerAndEnemySilhouettesOnScreen:
+	;Set menu page to 1
+	ld a, 1
+	ld [wSafariModePage], a
+
 	call LoadPlayerBackPic
 	ld a, MESSAGE_BOX ; the usual text box at the bottom of the screen
 	ld [wTextBoxID], a
@@ -269,22 +273,6 @@ StartBattle:
 	ld a, BATTLE_TYPE_SAFARI
 	ld [wBattleType], a
 	
-	;DEBUG: Add some balls to inventory
-	;ld hl, wNumBagItems
-	;ld a, GREAT_BALL
-	;ld [wcf91], a
-	;ld a, 4
-	;ld [wItemQuantity], a
-	;call AddItemToInventory
-	
-	;Get number of great balls in inventory
-	ld b, GREAT_BALL
-	call GetBagAmount
-
-	;Set number of Safari Balls
-	ld a, b
-	ld [wNumSafariBalls], a
-	
 ; safari zone battle
 .displaySafariZoneBattleMenu
 	call DisplayBattleMenu
@@ -293,25 +281,13 @@ StartBattle:
 	and a ; was the item used successfully?
 	jr z, .displaySafariZoneBattleMenu ; if not, display the menu again; XXX does this ever jump?
 	;Ball check has been moved to L2280
-	;ld a, [wNumSafariBalls]
-	;and a
-	;jr nz, .notOutOfSafariBalls
-	;call LoadScreenTilesFromBuffer1
-	;ld hl, .outOfSafariBallsText
-	;jp PrintText
+	
 .notOutOfSafariBalls
 	callab PrintSafariZoneBattleText
 	ld a, [wEnemyMonSpeed + 1]
 	add a
 	ld b, a ; init b (which is later compared with random value) to (enemy speed % 256) * 2
-	;jp c, EnemyRan ; if (enemy speed % 256) > 127, the enemy runs
-	;ld a, [wSafariBaitFactor]
-	;and a ; is bait factor 0?
-	;jr z, .checkEscapeFactor
-; bait factor is not 0
-; divide b by 4 (making the mon less likely to run)
-	;srl b
-	;srl b
+
 .checkEscapeFactor
 ;B is EnemySpeedMod
 	ld a, [wSafariEscapeFactor]
@@ -345,10 +321,6 @@ StartBattle:
 	
 	jp nc, .checkAnyPartyAlive
 	jr EnemyRan ; if b was greater than the random value, the enemy runs
-
-;.outOfSafariBallsText
-	;TX_FAR _OutOfSafariBallsText
-	;db "@"
 
 .playerSendOutFirstMon
 	xor a
@@ -557,7 +529,7 @@ MainInBattleLoop:
 	jr c, .AIActionUsedEnemyFirst
 	call ExecuteEnemyMove
 	ld a, [wEscapedFromBattle]
-	and a ; was Teleport, Road, or Whirlwind used to escape from battle?
+	and a ; was Teleport, Roar, or Whirlwind used to escape from battle?
 	ret nz ; if so, return
 	ld a, b
 	and a
@@ -568,7 +540,7 @@ MainInBattleLoop:
 	call DrawHUDsAndHPBars
 	call ExecutePlayerMove
 	ld a, [wEscapedFromBattle]
-	and a ; was Teleport, Road, or Whirlwind used to escape from battle?
+	and a ; was Teleport, Roar, or Whirlwind used to escape from battle?
 	ret nz ; if so, return
 	ld a, b
 	and a
@@ -581,7 +553,7 @@ MainInBattleLoop:
 .playerMovesFirst
 	call ExecutePlayerMove
 	ld a, [wEscapedFromBattle]
-	and a ; was Teleport, Road, or Whirlwind used to escape from battle?
+	and a ; was Teleport, Roar, or Whirlwind used to escape from battle?
 	ret nz ; if so, return
 	ld a, b
 	and a
@@ -595,7 +567,7 @@ MainInBattleLoop:
 	jr c, .AIActionUsedPlayerFirst
 	call ExecuteEnemyMove
 	ld a, [wEscapedFromBattle]
-	and a ; was Teleport, Road, or Whirlwind used to escape from battle?
+	and a ; was Teleport, Roar, or Whirlwind used to escape from battle?
 	ret nz ; if so, return
 	ld a, b
 	and a
@@ -2185,6 +2157,15 @@ DisplayBattleMenu:
 .oldManName
 	db "OLD MAN@"
 .handleBattleMenuInput
+	;Get number of great balls in inventory
+	;TODO: only load items for the correct page
+	ld b, GREAT_BALL
+	call GetBagAmount
+
+	;Set number of Safari Balls
+	ld a, b
+	ld [wItemCount1], a
+	
 	ld a, [wBattleAndStartSavedMenuItem]
 	ld [wCurrentMenuItem], a
 	ld [wLastMenuItem], a
@@ -2208,7 +2189,7 @@ DisplayBattleMenu:
 	Coorda 13, 14
 	Coorda 13, 16
 	coord hl, 7, 14
-	ld de, wNumSafariBalls
+	ld de, wItemCount1
 	lb bc, 1, 2
 	call PrintNumber
 	ld b, $1 ; top menu item X
@@ -2241,7 +2222,7 @@ DisplayBattleMenu:
 	Coorda 1, 14 ; clear upper cursor position in left column
 	Coorda 1, 16 ; clear lower cursor position in left column
 	coord hl, 7, 14
-	ld de, wNumSafariBalls
+	ld de, wItemCount1
 	lb bc, 1, 2
 	call PrintNumber
 	ld b, $d ; top menu item X
@@ -2303,7 +2284,7 @@ DisplayBattleMenu:
 	db "@"
 	
 	ld hl, .outOfSafariBallsText
-	ld a, [wNumSafariBalls]
+	ld a, [wItemCount1]
 	and a
 	jp z, PrintText
 

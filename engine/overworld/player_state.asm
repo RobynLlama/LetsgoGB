@@ -251,25 +251,25 @@ PrintSafariZoneSteps:
 	ld de, SafariSteps
 	call PlaceString
 	coord hl, 1, 3
-	ld de, SafariBallText
-	call PlaceString
-	ld a, [wNumSafariBalls]
-	cp 10
-	jr nc, .asm_c56d
-	coord hl, 5, 3
-	ld a, " "
-	ld [hl], a
+	;ld de, SafariBallText
+	;call PlaceString
+	;ld a, [wNumSafariBalls]
+	;cp 10
+	;jr nc, .asm_c56d
+	;coord hl, 5, 3
+	;ld a, " "
+	;ld [hl], a
 .asm_c56d
-	coord hl, 6, 3
-	ld de, wNumSafariBalls
-	lb bc, 1, 2
-	jp PrintNumber
+	;coord hl, 6, 3
+	;ld de, wNumSafariBalls
+	;lb bc, 1, 2
+	;jp PrintNumber
 
 SafariSteps:
 	db "/500@"
 
 SafariBallText:
-	db "BALL×× @"
+	db "@"
 
 GetTileAndCoordsInFrontOfPlayer:
 	call GetPredefRegisters
