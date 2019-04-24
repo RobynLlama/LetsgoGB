@@ -36,8 +36,8 @@ ItemUsePtrTable:
 	dw ItemUseMedicine   ; HYPER_POTION
 	dw ItemUseMedicine   ; SUPER_POTION
 	dw ItemUseMedicine   ; POTION
-	dw ItemUseBait       ; BOULDERBADGE
-	dw ItemUseRock       ; CASCADEBADGE
+	dw UnusableItem      ; BOULDERBADGE
+	dw ItemUseBerry      ; CASCADEBADGE
 	dw UnusableItem      ; THUNDERBADGE
 	dw UnusableItem      ; RAINBOWBADGE
 	dw UnusableItem      ; SOULBADGE
@@ -99,6 +99,7 @@ ItemUsePtrTable:
 	dw ItemUsePPRestore  ; MAX_ETHER
 	dw ItemUsePPRestore  ; ELIXER
 	dw ItemUsePPRestore  ; MAX_ELIXER
+	dw UnusableItem		 ; BERRY
 
 ItemUseBall:
 
@@ -1414,60 +1415,40 @@ VitaminText:
 	db "SPEED@"
 	db "SPECIAL@"
 
-ItemUseBait:
-	ld hl, ThrewBaitText
-	call PrintText
-	ret
-	;ld hl, wEnemyMonCatchRate ; catch rate
-	;srl [hl] ; halve catch rate
-	ld a, BAIT_ANIM
-	ld hl, wSafariBaitFactor ; bait factor
-	ld de, wSafariBaitFactor ; DEBUG
-	jr BaitRockCommon
-
-ItemUseRock:
-	ld hl, ThrewRockText
+ItemUseBerry:
+	ld hl, ThrewBerryText
 	call PrintText
 	ld hl, wEnemyMonCatchRate ; catch rate
 	ld a, [hl]
-	add a ; double catch rate
+	add 12 ;Increase catch rate
 	jr nc, .noCarry
 	ld a, $ff
 .noCarry
 	ld [hl], a
-	ld a, ROCK_ANIM
-	ld hl, wSafariEscapeFactor ; escape factor
-	ld de, wSafariBaitFactor ; bait factor
-
-BaitRockCommon:
+	ld a, 3 ;Eating text for 3 turns
+	ld [wSafariBaitFactor], a
+	ld hl, wSafariEscapeFactor ; escape factor reduction
+	dec [hl]
+	jr nc, .Animation
+	ld a, 0
+	ld [wSafariEscapeFactor], a
+.Animation
+	ld a, BAIT_ANIM
 	ld [wAnimationID], a
 	xor a
 	ld [wAnimationType], a
 	ld [H_WHOSETURN], a
-	ld [de], a ; zero escape factor (for bait), zero bait factor (for rock)
-.randomLoop ; loop until a random number less than 5 is generated
-	call Random
-	and 7
-	cp 5
-	jr nc, .randomLoop
-	inc a ; increment the random number, giving a range from 1 to 5 inclusive
-	ld b, a
-	ld a, [hl]
-	add b ; increase bait factor (for bait), increase escape factor (for rock)
-	jr nc, .noCarry
-	ld a, $ff
-.noCarry
-	;ld [hl], a
 	predef MoveAnimation ; do animation
 	ld c, 70
 	jp DelayFrames
+	
 
 ThrewBaitText:
 	TX_FAR _ThrewBaitText
 	db "@"
 
-ThrewRockText:
-	TX_FAR _ThrewRockText
+ThrewBerryText:
+	TX_FAR _ThrewBerryText
 	db "@"
 
 ; also used for Dig out-of-battle effect

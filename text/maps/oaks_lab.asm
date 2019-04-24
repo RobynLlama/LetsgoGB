@@ -120,6 +120,9 @@ _OaksLabGivePokeballsText1::
 
 	para "<PLAYER> got 12"
 	line "#BALLs!@@"
+	
+	para "<PLAYER> got 12"
+	line "BERRIES!@@"
 
 _OaksLabGivePokeballsText2::
 	text ""
@@ -133,9 +136,8 @@ _OaksLabGivePokeballsText2::
 	para "This won't always"
 	line "work, though."
 
-	para "A healthy #MON"
-	line "could escape. You"
-	cont "have to be lucky!"
+	para "Try feeding tough"
+	line "<pkmn> a BERRY"
 	done
 
 _OaksLabPleaseVisitText::

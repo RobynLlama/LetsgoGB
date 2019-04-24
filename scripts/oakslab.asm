@@ -1036,6 +1036,8 @@ OaksLabText5:
 	ld [wOaksLabCurScript], a
 	lb bc, GREAT_BALL, 12
 	call GiveItem
+	lb bc, BERRY, 12
+	call GiveItem
 	ld hl, OaksLabGivePokeballsText
 	call PrintText
 	jr .asm_1d2ed
