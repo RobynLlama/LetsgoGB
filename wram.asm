@@ -824,8 +824,6 @@ wInGameTradeReceiveMonSpecies::
 
 wNPCMovementDirections2Index:: ; cd37
 
-wSafariModePage:: ; cd37
-
 wFilteredBagItemsCount:: ; cd37
 ; number of items in wFilteredBagItems list
 	ds 1
@@ -3227,6 +3225,9 @@ wBoxMonNicks:: ds NAME_LENGTH * MONS_PER_BOX ; de06
 wBoxMonNicksEnd:: ; dee2
 
 wBoxDataEnd::
+
+wSafariModePage:: ; dee3
+	ds 1
 
 
 SECTION "Stack", WRAMX[$df00], BANK[1]

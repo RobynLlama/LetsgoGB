@@ -2121,7 +2121,11 @@ DisplayBattleMenu:
 	cp BATTLE_TYPE_SAFARI
 	ld a, BATTLE_MENU_TEMPLATE
 	jr nz, .menuselected
+	ld a, [wSafariModePage]
+	dec a
 	ld a, SAFARI_BATTLE_MENU_TEMPLATE
+	jr z, .menuselected
+	ld a, SAFARI_BATTLE_MENU_TEMPLATE_PG2
 .menuselected
 	ld [wTextBoxID], a
 	call DisplayTextBoxID
@@ -2162,9 +2166,16 @@ DisplayBattleMenu:
 	ld b, GREAT_BALL
 	call GetBagAmount
 
-	;Set number of Safari Balls
+	;Number of balls
 	ld a, b
 	ld [wItemCount1], a
+	
+	ld b, GREAT_BALL
+	call GetBagAmount
+	
+	;Number of berries
+	ld a, 0 ;no berry item yet
+	ld [wItemCount2], a
 	
 	ld a, [wBattleAndStartSavedMenuItem]
 	ld [wCurrentMenuItem], a
@@ -2188,10 +2199,20 @@ DisplayBattleMenu:
 .safariLeftColumn
 	Coorda 13, 14
 	Coorda 13, 16
+	ld a, [wSafariModePage]
+	dec a
+	jr nz, .SkipItemsLeft
+	;Item 1
 	coord hl, 7, 14
 	ld de, wItemCount1
 	lb bc, 1, 2
 	call PrintNumber
+	;Item 2
+	coord hl, 7, 16
+	ld de, wItemCount2
+	lb bc, 1, 2
+	call PrintNumber
+.SkipItemsLeft
 	ld b, $1 ; top menu item X
 .leftColumn_WaitForInput
 	ld hl, wTopMenuItemY
@@ -2221,10 +2242,20 @@ DisplayBattleMenu:
 .safariRightColumn
 	Coorda 1, 14 ; clear upper cursor position in left column
 	Coorda 1, 16 ; clear lower cursor position in left column
+	ld a, [wSafariModePage]
+	dec a
+	jr nz, .SkipItemsRight
+	;Item 1
 	coord hl, 7, 14
 	ld de, wItemCount1
 	lb bc, 1, 2
 	call PrintNumber
+	;Item 2
+	coord hl, 7, 16
+	ld de, wItemCount2
+	lb bc, 1, 2
+	call PrintNumber
+.SkipItemsRight
 	ld b, $d ; top menu item X
 .rightColumn_WaitForInput
 	ld hl, wTopMenuItemY
@@ -2240,7 +2271,7 @@ DisplayBattleMenu:
 	ld [hli], a ; wMenuWatchedKeys
 	call HandleMenuInput
 	bit 5, a ; check if left was pressed
-	jr nz, .leftColumn ; if left was pressed, jump
+	jp nz, .leftColumn ; if left was pressed, jump
 	ld a, [wCurrentMenuItem]
 	add $2 ; if we're in the right column, the actual id is +2
 	ld [wCurrentMenuItem], a
@@ -2277,8 +2308,12 @@ DisplayBattleMenu:
 	jp LoadScreenTilesFromBuffer1 ; restore saved screen and return
 	
 .throwSafariBallWasSelected
+	ld a, [wSafariModePage]
+	dec a
+	jr z, .BallsPage1
+	jp DisplayBattleMenu
+.BallsPage1
 	;Check if we have any balls
-	
 .outOfSafariBallsText
 	TX_FAR _OutOfSafariBallsText
 	db "@"
@@ -2329,10 +2364,10 @@ DisplayBattleMenu:
 	cp BATTLE_TYPE_SAFARI
 	jr nz, BagWasSelected
 
-; bait was selected
-	;ld a, SAFARI_BAIT
-	;ld [wcf91], a
-	;jr UseBagItem
+; PageSwap was selected
+	ld a, [wSafariModePage]
+	xor %00000011
+	ld [wSafariModePage], a
 	jp DisplayBattleMenu
 
 BagWasSelected:
@@ -2459,9 +2494,11 @@ PartyMenuOrRockOrRun:
 	cp BATTLE_TYPE_SAFARI
 	jr nz, .partyMenuWasSelected
 ; safari battle
-	;ld a, SAFARI_ROCK
-	;ld [wcf91], a
-	;jp UseBagItem
+	ld a, [wSafariModePage]
+	dec a
+	jr z, .RockPage1
+	jp DisplayBattleMenu
+.RockPage1
 	jp DisplayBattleMenu
 .partyMenuWasSelected
 	call LoadScreenTilesFromBuffer1
@@ -2597,6 +2634,11 @@ AlreadyOutText:
 	db "@"
 
 BattleMenu_RunWasSelected:
+	ld a, [wSafariModePage]
+	dec a
+	jr z, .RunPage1
+	jp DisplayBattleMenu
+.RunPage1
 	call LoadScreenTilesFromBuffer1
 	ld a, $3
 	ld [wCurrentMenuItem], a
