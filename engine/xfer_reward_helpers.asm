@@ -98,7 +98,7 @@ RewardItemsTable:
 	db GREAT_BALL
 	db GREAT_BALL
 	db GREAT_BALL
-	;25% POTION
+	;25% POTION or BERRY
 	db POTION
 	db POTION
 	db POTION
@@ -114,9 +114,9 @@ RewardItemsTable:
 	db REPEL
 	db REPEL
 	;~9.3% SUPER_REPEL
-	db SUPER_REPEL
-	db SUPER_REPEL
-	db SUPER_REPEL
+	db BERRY
+	db BERRY
+	db BERRY
 	;~9.3% SUPER_POTION
 	db SUPER_POTION
 	db SUPER_POTION

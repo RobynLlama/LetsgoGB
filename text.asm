@@ -1044,6 +1044,11 @@ _OutOfSafariBallsText::
 	text "<PLAYER> is"
 	line "out of balls!"
 	prompt
+	
+_OutOfSafariBerryText::
+	text "<PLAYER> is"
+	line "out of berries!"
+	prompt
 
 _WildRanText::
 	text "Wild @"
@@ -2851,9 +2856,9 @@ _ThrewBaitText::
 	line "some BAIT."
 	done
 
-_ThrewRockText::
+_ThrewBerryText::
 	text "<PLAYER> threw a"
-	line "ROCK."
+	line "BERRY."
 	done
 
 _PlayedFluteNoEffectText::
