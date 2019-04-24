@@ -62,7 +62,7 @@ ENDM
 
 SECTION "WRAM Bank 0", WRAM0
 
-wUnusedC000:: ; c000
+wItemCount1:: ; c000
 	ds 1
 
 wSoundID:: ; c001
@@ -542,7 +542,7 @@ wNPCMovementScriptBank:: ; cc58
 
 	ds 2
 
-wUnusedCC5B:: ; cc5b
+wItemCount2:: ; cc5b
 
 wVermilionDockTileMapBuffer:: ; cc5b
 ; 180 bytes
@@ -823,8 +823,6 @@ wInGameTradeReceiveMonSpecies::
 	ds 2
 
 wNPCMovementDirections2Index:: ; cd37
-
-wUnusedCD37:: ; cd37
 
 wFilteredBagItemsCount:: ; cd37
 ; number of items in wFilteredBagItems list
@@ -3196,7 +3194,7 @@ wPlayTimeFrames:: ; da45
 wSafariZoneGameOver:: ; da46
 	ds 1
 
-wNumSafariBalls:: ; da47
+wUnusedWRAMda74:: ; da47
 	ds 1
 
 
@@ -3227,6 +3225,9 @@ wBoxMonNicks:: ds NAME_LENGTH * MONS_PER_BOX ; de06
 wBoxMonNicksEnd:: ; dee2
 
 wBoxDataEnd::
+
+wSafariModePage:: ; dee3
+	ds 1
 
 
 SECTION "Stack", WRAMX[$df00], BANK[1]

@@ -1,10 +1,11 @@
-# Pokémon Red and Blue
+# Lets Go GB
 
-Crunchy modifications to Pokemon Red to change the battle mechanics to resemble Let's Go Evee/Pikachu (a little bit)
+Crunchy modifications to Pokemon Red/Blue to change the battle mechanics to resemble Let's Go Evee/Pikachu (a little bit)
 
 ## References
 * ASMSchool [LINK][asmschool]
 * Z80 Heaven [LINK][z80heaven]
+* OpCodes [LINK][devrs]
 
 ## See also
 
@@ -31,3 +32,4 @@ Crunchy modifications to Pokemon Red to change the battle mechanics to resemble 
 [irc]: https://kiwiirc.com/client/irc.freenode.net/?#pret
 [asmschool]:http://gameboy.mongenel.com/asmschool.html
 [z80heaven]:http://z80-heaven.wikidot.com/
+[devrs]:http://www.devrs.com/gb/files/opcodes.html

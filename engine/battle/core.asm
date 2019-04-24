@@ -99,6 +99,10 @@ SpecialEffectsCont:
 	db -1
 
 SlidePlayerAndEnemySilhouettesOnScreen:
+	;Set menu page to 1
+	ld a, 1
+	ld [wSafariModePage], a
+
 	call LoadPlayerBackPic
 	ld a, MESSAGE_BOX ; the usual text box at the bottom of the screen
 	ld [wTextBoxID], a
@@ -269,22 +273,6 @@ StartBattle:
 	ld a, BATTLE_TYPE_SAFARI
 	ld [wBattleType], a
 	
-	;DEBUG: Add some balls to inventory
-	;ld hl, wNumBagItems
-	;ld a, GREAT_BALL
-	;ld [wcf91], a
-	;ld a, 4
-	;ld [wItemQuantity], a
-	;call AddItemToInventory
-	
-	;Get number of great balls in inventory
-	ld b, GREAT_BALL
-	call GetBagAmount
-
-	;Set number of Safari Balls
-	ld a, b
-	ld [wNumSafariBalls], a
-	
 ; safari zone battle
 .displaySafariZoneBattleMenu
 	call DisplayBattleMenu
@@ -293,25 +281,13 @@ StartBattle:
 	and a ; was the item used successfully?
 	jr z, .displaySafariZoneBattleMenu ; if not, display the menu again; XXX does this ever jump?
 	;Ball check has been moved to L2280
-	;ld a, [wNumSafariBalls]
-	;and a
-	;jr nz, .notOutOfSafariBalls
-	;call LoadScreenTilesFromBuffer1
-	;ld hl, .outOfSafariBallsText
-	;jp PrintText
+	
 .notOutOfSafariBalls
 	callab PrintSafariZoneBattleText
 	ld a, [wEnemyMonSpeed + 1]
 	add a
 	ld b, a ; init b (which is later compared with random value) to (enemy speed % 256) * 2
-	;jp c, EnemyRan ; if (enemy speed % 256) > 127, the enemy runs
-	;ld a, [wSafariBaitFactor]
-	;and a ; is bait factor 0?
-	;jr z, .checkEscapeFactor
-; bait factor is not 0
-; divide b by 4 (making the mon less likely to run)
-	;srl b
-	;srl b
+
 .checkEscapeFactor
 ;B is EnemySpeedMod
 	ld a, [wSafariEscapeFactor]
@@ -345,10 +321,6 @@ StartBattle:
 	
 	jp nc, .checkAnyPartyAlive
 	jr EnemyRan ; if b was greater than the random value, the enemy runs
-
-;.outOfSafariBallsText
-	;TX_FAR _OutOfSafariBallsText
-	;db "@"
 
 .playerSendOutFirstMon
 	xor a
@@ -557,7 +529,7 @@ MainInBattleLoop:
 	jr c, .AIActionUsedEnemyFirst
 	call ExecuteEnemyMove
 	ld a, [wEscapedFromBattle]
-	and a ; was Teleport, Road, or Whirlwind used to escape from battle?
+	and a ; was Teleport, Roar, or Whirlwind used to escape from battle?
 	ret nz ; if so, return
 	ld a, b
 	and a
@@ -568,7 +540,7 @@ MainInBattleLoop:
 	call DrawHUDsAndHPBars
 	call ExecutePlayerMove
 	ld a, [wEscapedFromBattle]
-	and a ; was Teleport, Road, or Whirlwind used to escape from battle?
+	and a ; was Teleport, Roar, or Whirlwind used to escape from battle?
 	ret nz ; if so, return
 	ld a, b
 	and a
@@ -581,7 +553,7 @@ MainInBattleLoop:
 .playerMovesFirst
 	call ExecutePlayerMove
 	ld a, [wEscapedFromBattle]
-	and a ; was Teleport, Road, or Whirlwind used to escape from battle?
+	and a ; was Teleport, Roar, or Whirlwind used to escape from battle?
 	ret nz ; if so, return
 	ld a, b
 	and a
@@ -595,7 +567,7 @@ MainInBattleLoop:
 	jr c, .AIActionUsedPlayerFirst
 	call ExecuteEnemyMove
 	ld a, [wEscapedFromBattle]
-	and a ; was Teleport, Road, or Whirlwind used to escape from battle?
+	and a ; was Teleport, Roar, or Whirlwind used to escape from battle?
 	ret nz ; if so, return
 	ld a, b
 	and a
@@ -2149,7 +2121,11 @@ DisplayBattleMenu:
 	cp BATTLE_TYPE_SAFARI
 	ld a, BATTLE_MENU_TEMPLATE
 	jr nz, .menuselected
+	ld a, [wSafariModePage]
+	dec a
 	ld a, SAFARI_BATTLE_MENU_TEMPLATE
+	jr z, .menuselected
+	ld a, SAFARI_BATTLE_MENU_TEMPLATE_PG2
 .menuselected
 	ld [wTextBoxID], a
 	call DisplayTextBoxID
@@ -2185,6 +2161,22 @@ DisplayBattleMenu:
 .oldManName
 	db "OLD MAN@"
 .handleBattleMenuInput
+	;Get number of great balls in inventory
+	;TODO: only load items for the correct page
+	ld b, GREAT_BALL
+	call GetBagAmount
+
+	;Number of balls
+	ld a, b
+	ld [wItemCount1], a
+	
+	ld b, GREAT_BALL
+	call GetBagAmount
+	
+	;Number of berries
+	ld a, 0 ;no berry item yet
+	ld [wItemCount2], a
+	
 	ld a, [wBattleAndStartSavedMenuItem]
 	ld [wCurrentMenuItem], a
 	ld [wLastMenuItem], a
@@ -2207,10 +2199,20 @@ DisplayBattleMenu:
 .safariLeftColumn
 	Coorda 13, 14
 	Coorda 13, 16
+	ld a, [wSafariModePage]
+	dec a
+	jr nz, .SkipItemsLeft
+	;Item 1
 	coord hl, 7, 14
-	ld de, wNumSafariBalls
+	ld de, wItemCount1
 	lb bc, 1, 2
 	call PrintNumber
+	;Item 2
+	coord hl, 7, 16
+	ld de, wItemCount2
+	lb bc, 1, 2
+	call PrintNumber
+.SkipItemsLeft
 	ld b, $1 ; top menu item X
 .leftColumn_WaitForInput
 	ld hl, wTopMenuItemY
@@ -2240,10 +2242,20 @@ DisplayBattleMenu:
 .safariRightColumn
 	Coorda 1, 14 ; clear upper cursor position in left column
 	Coorda 1, 16 ; clear lower cursor position in left column
+	ld a, [wSafariModePage]
+	dec a
+	jr nz, .SkipItemsRight
+	;Item 1
 	coord hl, 7, 14
-	ld de, wNumSafariBalls
+	ld de, wItemCount1
 	lb bc, 1, 2
 	call PrintNumber
+	;Item 2
+	coord hl, 7, 16
+	ld de, wItemCount2
+	lb bc, 1, 2
+	call PrintNumber
+.SkipItemsRight
 	ld b, $d ; top menu item X
 .rightColumn_WaitForInput
 	ld hl, wTopMenuItemY
@@ -2259,7 +2271,7 @@ DisplayBattleMenu:
 	ld [hli], a ; wMenuWatchedKeys
 	call HandleMenuInput
 	bit 5, a ; check if left was pressed
-	jr nz, .leftColumn ; if left was pressed, jump
+	jp nz, .leftColumn ; if left was pressed, jump
 	ld a, [wCurrentMenuItem]
 	add $2 ; if we're in the right column, the actual id is +2
 	ld [wCurrentMenuItem], a
@@ -2296,14 +2308,18 @@ DisplayBattleMenu:
 	jp LoadScreenTilesFromBuffer1 ; restore saved screen and return
 	
 .throwSafariBallWasSelected
+	ld a, [wSafariModePage]
+	dec a
+	jr z, .BallsPage1
+	jp DisplayBattleMenu
+.BallsPage1
 	;Check if we have any balls
-	
 .outOfSafariBallsText
 	TX_FAR _OutOfSafariBallsText
 	db "@"
 	
 	ld hl, .outOfSafariBallsText
-	ld a, [wNumSafariBalls]
+	ld a, [wItemCount1]
 	and a
 	jp z, PrintText
 
@@ -2348,10 +2364,10 @@ DisplayBattleMenu:
 	cp BATTLE_TYPE_SAFARI
 	jr nz, BagWasSelected
 
-; bait was selected
-	;ld a, SAFARI_BAIT
-	;ld [wcf91], a
-	;jr UseBagItem
+; PageSwap was selected
+	ld a, [wSafariModePage]
+	xor %00000011
+	ld [wSafariModePage], a
 	jp DisplayBattleMenu
 
 BagWasSelected:
@@ -2478,9 +2494,11 @@ PartyMenuOrRockOrRun:
 	cp BATTLE_TYPE_SAFARI
 	jr nz, .partyMenuWasSelected
 ; safari battle
-	;ld a, SAFARI_ROCK
-	;ld [wcf91], a
-	;jp UseBagItem
+	ld a, [wSafariModePage]
+	dec a
+	jr z, .RockPage1
+	jp DisplayBattleMenu
+.RockPage1
 	jp DisplayBattleMenu
 .partyMenuWasSelected
 	call LoadScreenTilesFromBuffer1
@@ -2616,6 +2634,11 @@ AlreadyOutText:
 	db "@"
 
 BattleMenu_RunWasSelected:
+	ld a, [wSafariModePage]
+	dec a
+	jr z, .RunPage1
+	jp DisplayBattleMenu
+.RunPage1
 	call LoadScreenTilesFromBuffer1
 	ld a, $3
 	ld [wCurrentMenuItem], a
