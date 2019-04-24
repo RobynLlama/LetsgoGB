@@ -2502,7 +2502,7 @@ PartyMenuOrRockOrRun:
 	;Check if we have any Berries
 	;TODO: New text here
 .outOfSafariBerryText
-	TX_FAR _OutOfSafariBallsText
+	TX_FAR _OutOfSafariBerryText
 	db "@"
 	
 	ld hl, .outOfSafariBerryText

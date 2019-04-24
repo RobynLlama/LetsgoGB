@@ -1044,6 +1044,11 @@ _OutOfSafariBallsText::
 	text "<PLAYER> is"
 	line "out of balls!"
 	prompt
+	
+_OutOfSafariBerryText::
+	text "<PLAYER> is"
+	line "out of berries!"
+	prompt
 
 _WildRanText::
 	text "Wild @"
