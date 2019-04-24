@@ -132,8 +132,8 @@ ItemUseBall:
 	jr nz, .skipSafariZoneCode
 
 .safariZone
-	ld hl, wNumSafariBalls
-	dec [hl] ; remove a Safari Ball
+	;ld hl, wNumSafariBalls
+	;dec [hl] ; remove a Safari Ball
 
 .skipSafariZoneCode
 	call RunDefaultPaletteCommand
@@ -1494,7 +1494,7 @@ ItemUseEscapeRope:
 	res 4, [hl]
 	ResetEvent EVENT_IN_SAFARI_ZONE
 	xor a
-	ld [wNumSafariBalls], a
+	;ld [wNumSafariBalls], a
 	ld [wSafariZoneEntranceCurScript], a
 	inc a
 	ld [wEscapedFromBattle], a

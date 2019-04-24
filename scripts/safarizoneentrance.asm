@@ -84,7 +84,7 @@ SafariZoneEntranceScriptPointers:
 	ld [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	xor a
-	ld [wNumSafariBalls], a
+	;ld [wNumSafariBalls], a
 	ld a, D_DOWN
 	ld c, $3
 	call SafariZoneEntranceAutoWalk
@@ -180,8 +180,8 @@ SafariZoneEntranceTextPointers:
 	call DisplayTextBoxID
 	ld hl, .MakePaymentText
 	call PrintText
-	ld a, 30
-	ld [wNumSafariBalls], a
+	;ld a, 30
+	;ld [wNumSafariBalls], a
 	ld a, 502 / $100
 	ld [wSafariSteps], a
 	ld a, 502 % $100
