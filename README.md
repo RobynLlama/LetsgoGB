@@ -1,6 +1,6 @@
-# Pokémon Red and Blue
+# Lets Go GB
 
-Crunchy modifications to Pokemon Red to change the battle mechanics to resemble Let's Go Evee/Pikachu (a little bit)
+Crunchy modifications to Pokemon Red/Blue to change the battle mechanics to resemble Let's Go Evee/Pikachu (a little bit)
 
 ## References
 * ASMSchool [LINK][asmschool]
