@@ -2170,11 +2170,11 @@ DisplayBattleMenu:
 	ld a, b
 	ld [wItemCount1], a
 	
-	ld b, GREAT_BALL
+	ld b, BERRY
 	call GetBagAmount
 	
 	;Number of berries
-	ld a, 0 ;no berry item yet
+	ld a, b ;no berry item yet
 	ld [wItemCount2], a
 	
 	ld a, [wBattleAndStartSavedMenuItem]
@@ -2208,7 +2208,7 @@ DisplayBattleMenu:
 	lb bc, 1, 2
 	call PrintNumber
 	;Item 2
-	coord hl, 7, 16
+	coord hl, 8, 16
 	ld de, wItemCount2
 	lb bc, 1, 2
 	call PrintNumber
@@ -2251,7 +2251,7 @@ DisplayBattleMenu:
 	lb bc, 1, 2
 	call PrintNumber
 	;Item 2
-	coord hl, 7, 16
+	coord hl, 8, 16
 	ld de, wItemCount2
 	lb bc, 1, 2
 	call PrintNumber
@@ -2499,7 +2499,38 @@ PartyMenuOrRockOrRun:
 	jr z, .RockPage1
 	jp DisplayBattleMenu
 .RockPage1
-	jp DisplayBattleMenu
+	;Check if we have any Berries
+	;TODO: New text here
+.outOfSafariBerryText
+	TX_FAR _OutOfSafariBallsText
+	db "@"
+	
+	ld hl, .outOfSafariBerryText
+	ld a, [wItemCount2]
+	and a
+	jp z, PrintText
+
+	;Get slot ID
+	ld a, BERRY
+	ld [wcf91], a
+	ld a, 0
+	call GetBagSlotByItemID
+
+	;Decrement
+	ld a, c
+	ld hl, wNumBagItems
+	ld [wWhichPokemon], a
+	ld a, 1
+	ld [wItemQuantity], a
+	call RemoveItemFromInventory
+	
+	ld hl, 0
+
+	;Use a Berry
+	ld a, SAFARI_BERRY
+	ld [wcf91], a
+	jp UseBagItem
+	
 .partyMenuWasSelected
 	call LoadScreenTilesFromBuffer1
 	xor a ; NORMAL_PARTY_MENU

@@ -2851,9 +2851,9 @@ _ThrewBaitText::
 	line "some BAIT."
 	done
 
-_ThrewRockText::
+_ThrewBerryText::
 	text "<PLAYER> threw a"
-	line "ROCK."
+	line "BERRY."
 	done
 
 _PlayedFluteNoEffectText::
