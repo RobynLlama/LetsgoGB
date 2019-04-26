@@ -1416,8 +1416,11 @@ VitaminText:
 	db "SPECIAL@"
 
 ItemUseBerry:
-	ld hl, ThrewBerryText
-	call PrintText
+	;Check if the mon is already eating
+	ld hl, ThrewBerryAlreadyText
+	ld a, [wSafariBaitFactor]
+	cp 0
+	jr nz, .Animation
 	ld hl, wEnemyMonCatchRate ; catch rate
 	ld a, [hl]
 	add 12 ;Increase catch rate
@@ -1432,7 +1435,9 @@ ItemUseBerry:
 	jr nc, .Animation
 	ld a, 0
 	ld [wSafariEscapeFactor], a
+	ld hl, ThrewBerryText
 .Animation
+	call PrintText
 	ld a, BAIT_ANIM
 	ld [wAnimationID], a
 	xor a
@@ -1449,6 +1454,10 @@ ThrewBaitText:
 
 ThrewBerryText:
 	TX_FAR _ThrewBerryText
+	db "@"
+	
+ThrewBerryAlreadyText:
+	TX_FAR _ThrewBerryAlreadyText
 	db "@"
 
 ; also used for Dig out-of-battle effect
