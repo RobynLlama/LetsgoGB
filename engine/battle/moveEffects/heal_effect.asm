@@ -1,3 +1,18 @@
+ClearToxicEffects:
+	ld hl, wPlayerToxicCounter
+	ld de, wPlayerBattleStatus3
+	ld a, [H_WHOSETURN]
+	and a
+	jr z, .GotTurn
+	ld hl, wEnemyToxicCounter
+	ld de, wEnemyBattleStatus3
+.GotTurn
+	ld [hl], 0 ;Clear toxic counter
+	ld a, [de]
+	res BADLY_POISONED, a ;Clear badly poisoned bit
+	ld [de], a
+	ret
+
 HealEffect_:
 	ld a, [H_WHOSETURN]
 	and a
@@ -32,10 +47,13 @@ HealEffect_:
 	jr z, .restEffect
 	ld hl, wEnemyMonStatus
 .restEffect
+	call ClearToxicEffects
 	ld a, [hl]
-	and a
+	push af
 	ld [hl], 2 ; clear status and set number of turns asleep to 2
 	ld hl, StartedSleepingEffect ; if mon didn't have an status
+	pop af
+	and a
 	jr z, .printRestText
 	ld hl, FellAsleepBecameHealthyText ; if mon had an status
 .printRestText
