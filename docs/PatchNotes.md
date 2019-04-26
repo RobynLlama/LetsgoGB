@@ -1,3 +1,23 @@
+# Version 0.2.16 "Gen1Bugfix-Release1"
+## The "Wow Gen1 sure is broken" release
+Release Notes:
+* Toxic no longer interacts with other status effects
+  * Burn no longer gains damage from the toxic counter if the target rested while toxic poisoned
+  * Leech Seed no longer gains damage from and increments the toxic counter
+  * Poison no longer gets promoted to toxic poison if the target rested while toxic poisoned
+  * Rest properly clears the toxic flag and toxic counter
+* NEW: Berries have been added to replace both bait and rocks
+  * Berries have been added to several item tables
+    * Oak provides one dozen berries and a brief explanation of them when delivering his parcel
+    * Berries replace super repel in transfer rewards
+    * Berries can be purchased in the Dept Store
+  * Berries increase the catch rate of wild pokemon
+  * Berries also negate Flee rate increases for the turn they were thrown
+    * Note that wild pokemon can still run if Flee rate is already high
+* NEW: Safari Mode interface has been updated
+  * Safari Mode has a second page full of NONE.
+  * Switch between pages using the PAGE command where BAIT used to be
+
 # Version 0.2.0 "Mechanics Overhaul"
 ## The "Fix and balance safari mode" update
 Release Notes:
