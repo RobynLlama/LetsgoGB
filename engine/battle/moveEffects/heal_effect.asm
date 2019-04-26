@@ -47,10 +47,10 @@ HealEffect_:
 	jr z, .restEffect
 	ld hl, wEnemyMonStatus
 .restEffect
-	call ClearToxicEffects
 	ld a, [hl]
 	push af
 	ld [hl], 2 ; clear status and set number of turns asleep to 2
+	call ClearToxicEffects
 	ld hl, StartedSleepingEffect ; if mon didn't have an status
 	pop af
 	and a
