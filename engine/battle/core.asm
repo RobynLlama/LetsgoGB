@@ -691,6 +691,11 @@ HandlePoisonBurnLeechSeed_DecreaseOwnHP:
 .playersTurn
 	bit BADLY_POISONED, [hl]
 	jr z, .noToxic
+	;Check if we're actually doing poison damage
+	;This fixes the LeechSeed bug
+	ld a, [wAnimationID]
+	cp BURN_PSN_ANIM
+	jr nz, .noToxic
 	ld a, [de]    ; increment toxic counter
 	inc a
 	ld [de], a
