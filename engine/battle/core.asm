@@ -3660,7 +3660,12 @@ CheckPlayerStatusConditions:
 	call BattleRandom
 	cp $3F ; 25% to be fully paralyzed
 	jr nc, .BideCheck
-	ld hl, FullyParalyzedText
+	;remove invulnerability flag
+	ld hl, wPlayerBattleStatus1
+	ld a, [hl]
+	res 6, a
+	ld [hl], a
+	ld hl, FullyParalyzedText	
 	call PrintText
 
 .MonHurtItselfOrFullyParalysed
@@ -7397,15 +7402,11 @@ SleepEffect:
 	ld bc, wEnemyBattleStatus2
 	ld a, [H_WHOSETURN]
 	and a
-	jp z, .sleepEffect
+	jr z, .sleepEffect
 	ld de, wBattleMonStatus
 	ld bc, wPlayerBattleStatus2
 
 .sleepEffect
-	;Store pointer to Status2
-	push bc
-	jr nz, .setSleepCounter ; if the target had to recharge, all hit tests will be skipped
-	                        ; including the event where the target already has another status
 	ld a, [de]
 	ld b, a
 	and $7
@@ -7429,8 +7430,14 @@ SleepEffect:
 	jr z, .setSleepCounter
 	ld [de], a
 	call PlayCurrentMoveAnimation2
-	;Recall pointer to Status2
-	pop bc
+	;Get turn
+	ld bc, wEnemyBattleStatus2
+	ld a, [H_WHOSETURN]
+	and a
+	jr z, .BitReady
+	ld bc, wPlayerBattleStatus2
+.BitReady
+	ld bc, wPlayerBattleStatus2
 	;Reset recharge bit
 	ld a, [bc]
 	res NEEDS_TO_RECHARGE, a
