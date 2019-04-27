@@ -7402,10 +7402,8 @@ SleepEffect:
 	ld bc, wPlayerBattleStatus2
 
 .sleepEffect
-	ld a, [bc]
-	bit NEEDS_TO_RECHARGE, a ; does the target need to recharge? (hyper beam)
-	res NEEDS_TO_RECHARGE, a ; target no longer needs to recharge
-	ld [bc], a
+	;Store pointer to Status2
+	push bc
 	jr nz, .setSleepCounter ; if the target had to recharge, all hit tests will be skipped
 	                        ; including the event where the target already has another status
 	ld a, [de]
@@ -7431,6 +7429,12 @@ SleepEffect:
 	jr z, .setSleepCounter
 	ld [de], a
 	call PlayCurrentMoveAnimation2
+	;Recall pointer to Status2
+	pop bc
+	;Reset recharge bit
+	ld a, [bc]
+	res NEEDS_TO_RECHARGE, a
+	ld [bc], a
 	ld hl, FellAsleepText
 	jp PrintText
 .didntAffect
