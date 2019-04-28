@@ -1347,10 +1347,9 @@ Mon133_EvosMoves:
 	db 0
 Mon133_EvosEnd:
 ;Learnset
-	db 27,QUICK_ATTACK
-	db 31,TAIL_WHIP
-	db 37,BITE
-	db 45,TAKE_DOWN
+	db 12,QUICK_ATTACK
+	db 20,BITE
+	db 28,TAKE_DOWN
 	db 0
 
 Mon136_EvosMoves:
@@ -1358,9 +1357,8 @@ Mon136_EvosMoves:
 ;Evolutions
 	db 0
 ;Learnset
-	db 27,QUICK_ATTACK
+	db 12,QUICK_ATTACK
 	db 31,EMBER
-	db 37,TAIL_WHIP
 	db 40,BITE
 	db 42,LEER
 	db 44,FIRE_SPIN
@@ -1373,9 +1371,8 @@ Mon135_EvosMoves:
 ;Evolutions
 	db 0
 ;Learnset
-	db 27,QUICK_ATTACK
+	db 12,QUICK_ATTACK
 	db 31,THUNDERSHOCK
-	db 37,TAIL_WHIP
 	db 40,THUNDER_WAVE
 	db 42,DOUBLE_KICK
 	db 44,AGILITY
@@ -1388,9 +1385,8 @@ Mon134_EvosMoves:
 ;Evolutions
 	db 0
 ;Learnset
-	db 27,QUICK_ATTACK
+	db 12,QUICK_ATTACK
 	db 31,WATER_GUN
-	db 37,TAIL_WHIP
 	db 40,BITE
 	db 42,ACID_ARMOR
 	db 44,HAZE
