@@ -1,5 +1,5 @@
-# Next Version
-## The "Next Version" release
+# Version 0.2.29 "Gen1Bugfix-Release2"
+## The "BEGONE BUGS" release
 Release Notes:
 * Fixed several serious issues with Berries
   * Berries can no longer underflow the Escape Factor to 255
@@ -13,6 +13,12 @@ Release Notes:
   * Eevee now learns Tail Whip in place of Sand Attack
   * Several more of Eevee's level up moves have been adjusted to be in line with original starters
   * TMs are now infinite use
+  * Karate Chop is now correctly a fighting type move
+  * Critical Rates have been increased to more closely match vanilla values (within reason)
+    * Base crit rate for all mons is now 10% (up from 8.5%)
+    * Focus Energy now provides +20% critical rate (up from 8.75%)
+    * High-crit  moves now provide +20% critical rate (up from 8.75%)
+    * Maximum critical rate is now 50% (up from ~27.5%)
 
 # Version 0.2.16 "Gen1Bugfix-Release1"
 ## The "Wow Gen1 sure is broken" release
