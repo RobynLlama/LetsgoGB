@@ -452,9 +452,7 @@ BlackbeltData:
 	db 43,MACHOKE,MACHOP,MACHOKE,0
 Green1Data:
 ;Oaks Lab
-	;Eventually Green will choose an Eeveelution and stick with it the whole game.
-	;Or if he has Pikachu his other mons can vary? I dunno
-	;For now he'll always pick the same team. TODO: randomize which team green picks at the start of the game.
+	;Green will choose an Eeveelution and stick with it the whole game.
 	IF DEF(_RED)
 	db 5, PIKACHU, 0
 	db 5, PIKACHU, 0

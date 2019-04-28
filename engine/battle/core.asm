@@ -691,6 +691,11 @@ HandlePoisonBurnLeechSeed_DecreaseOwnHP:
 .playersTurn
 	bit BADLY_POISONED, [hl]
 	jr z, .noToxic
+	;Check if we're actually doing poison damage
+	;This fixes the LeechSeed bug
+	ld a, [wAnimationID]
+	cp BURN_PSN_ANIM
+	jr nz, .noToxic
 	ld a, [de]    ; increment toxic counter
 	inc a
 	ld [de], a
@@ -3655,7 +3660,12 @@ CheckPlayerStatusConditions:
 	call BattleRandom
 	cp $3F ; 25% to be fully paralyzed
 	jr nc, .BideCheck
-	ld hl, FullyParalyzedText
+	;remove invulnerability flag
+	ld hl, wPlayerBattleStatus1
+	ld a, [hl]
+	res 6, a
+	ld [hl], a
+	ld hl, FullyParalyzedText	
 	call PrintText
 
 .MonHurtItselfOrFullyParalysed
@@ -7392,17 +7402,11 @@ SleepEffect:
 	ld bc, wEnemyBattleStatus2
 	ld a, [H_WHOSETURN]
 	and a
-	jp z, .sleepEffect
+	jr z, .sleepEffect
 	ld de, wBattleMonStatus
 	ld bc, wPlayerBattleStatus2
 
 .sleepEffect
-	ld a, [bc]
-	bit NEEDS_TO_RECHARGE, a ; does the target need to recharge? (hyper beam)
-	res NEEDS_TO_RECHARGE, a ; target no longer needs to recharge
-	ld [bc], a
-	jr nz, .setSleepCounter ; if the target had to recharge, all hit tests will be skipped
-	                        ; including the event where the target already has another status
 	ld a, [de]
 	ld b, a
 	and $7
@@ -7426,6 +7430,18 @@ SleepEffect:
 	jr z, .setSleepCounter
 	ld [de], a
 	call PlayCurrentMoveAnimation2
+	;Get turn
+	ld bc, wEnemyBattleStatus2
+	ld a, [H_WHOSETURN]
+	and a
+	jr z, .BitReady
+	ld bc, wPlayerBattleStatus2
+.BitReady
+	ld bc, wPlayerBattleStatus2
+	;Reset recharge bit
+	ld a, [bc]
+	res NEEDS_TO_RECHARGE, a
+	ld [bc], a
 	ld hl, FellAsleepText
 	jp PrintText
 .didntAffect
@@ -7904,12 +7920,12 @@ StatModifierDownEffect:
 	ld hl, wPlayerMonStatMods
 	ld de, wEnemyMoveEffect
 	ld bc, wPlayerBattleStatus1
-	ld a, [wLinkState]
-	cp LINK_STATE_BATTLING
-	jr z, .statModifierDownEffect
-	call BattleRandom
-	cp $40 ; 1/4 chance to miss by in regular battle
-	jp c, MoveMissed
+	;ld a, [wLinkState]
+	;cp LINK_STATE_BATTLING
+	;jr z, .statModifierDownEffect
+	;call BattleRandom
+	;cp $40 ; 1/4 chance to miss by in regular battle
+	;jp c, MoveMissed
 .statModifierDownEffect
 	call CheckTargetSubstitute ; can't hit through substitute
 	jp nz, MoveMissed

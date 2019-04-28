@@ -456,9 +456,9 @@ GameCornerHiddenObjects:
 	dbw BANK(HiddenCoins),HiddenCoins
 	db $FF
 CeladonHotelHiddenObjects:
-	db $03,$0d,$04
-	db BANK(OpenPokemonCenterPC)
-	dw OpenPokemonCenterPC
+	;db $03,$0d,$04
+	;db BANK(OpenPokemonCenterPC)
+	;dw OpenPokemonCenterPC
 	db $04,$00,$08
 	db Bank(PrintBenchGuyText)
 	dw PrintBenchGuyText

@@ -2860,6 +2860,13 @@ _ThrewBerryText::
 	text "<PLAYER> threw a"
 	line "BERRY."
 	done
+	
+_ThrewBerryAlreadyText::
+	text "Wild @"
+	TX_RAM wEnemyMonNick
+	db $0
+	line "is already eating!"
+	prompt
 
 _PlayedFluteNoEffectText::
 	text "Played the #"
