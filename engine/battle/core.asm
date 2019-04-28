@@ -4860,14 +4860,14 @@ CriticalHitTest:
 	ld c, [hl]                   ; read move id
 	ld a, [de]
 								;[CriticalHitFix]
-	ld b, 21					;21 / 256 chance default crit rate (~8.25%)
+	ld b, 25					;25 / 256 chance default crit rate (~10%)
 	
 	bit GETTING_PUMPED, a         ; Test for focus energy
 	jr nz, .focusEnergyUsed 	; Jump to focus energy
 	jr .noFocusEnergyUsed		; Skip focus energy
 .focusEnergyUsed
 	ld a, b						; Load current critical rate into a
-	add a, 23					; set rate to +23 (~15.25%)
+	add a, 50					; set rate to +50 (~30%)
 	ld b, a						; Move new rate back into reg b
 .noFocusEnergyUsed
 	ld hl, HighCriticalMoves     ; table of high critical hit moves
@@ -4881,7 +4881,7 @@ CriticalHitTest:
 	jr .SkipHighCritical         ; continue as a normal move
 .HighCritical
 	ld a, b						; Current crit chance in acc
-	add a, 23					; set rate to +23 (~15.25% HighCrit)(~24.25% HighCrit+PUMPED)
+	add a, 50					; set rate to +50 (~30% HighCrit)(~50% HighCrit+PUMPED)
 	ld b, a						; Move new rate into reg b
 .SkipHighCritical
 	call BattleRandom            ; generates a random value, in "a"
