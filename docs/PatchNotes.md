@@ -12,6 +12,7 @@ Release Notes:
   * Enemy status effects no longer fizzle 25% of the time, have fun
   * Eevee now learns Tail Whip in place of Sand Attack
   * Several more of Eevee's level up moves have been adjusted to be in line with original starters
+  * TMs are now infinite use
 
 # Version 0.2.16 "Gen1Bugfix-Release1"
 ## The "Wow Gen1 sure is broken" release
