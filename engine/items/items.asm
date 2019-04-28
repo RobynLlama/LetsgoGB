@@ -1432,10 +1432,10 @@ ItemUseBerry:
 	ld [wSafariBaitFactor], a
 	ld hl, wSafariEscapeFactor ; escape factor reduction
 	dec [hl]
+	ld hl, ThrewBerryText
 	jr nc, .Animation
 	ld a, 0
 	ld [wSafariEscapeFactor], a
-	ld hl, ThrewBerryText
 .Animation
 	call PrintText
 	ld a, BAIT_ANIM
