@@ -1,14 +1,14 @@
 # Next Version
 ## The "Next Version" release
 Release Notes:
- * Fixed several serious issues with Berries
+* Fixed several serious issues with Berries
   * Berries can no longer underflow the Escape Factor to 255
   * Berries no longer sometimes cause ERROR 48
- * Fixed many Generation 1 bugs
+* Fixed many Generation 1 bugs
   * A fully parlyzed mon in the middle of a two-turn move no longer becomes invlunerable for the rest of battle
   * Sleep moves no longer bypass all checks on mons that are recharging from using Hyper Beam
   * Celadon Hotel no longer has an invisible PC in the corner
- * Balance Changes
+* Balance Changes
   * Enemy status effects no longer fizzle 25% of the time, have fun
   * Eevee now learns Tail Whip in place of Sand Attack
   * Several more of Eevee's level up moves have been adjusted to be in line with original starters
