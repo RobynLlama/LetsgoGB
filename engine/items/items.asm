@@ -1431,7 +1431,11 @@ ItemUseBerry:
 	ld a, 3 ;Eating text for 3 turns
 	ld [wSafariBaitFactor], a
 	ld hl, wSafariEscapeFactor ; escape factor reduction
+	ld a, [hl]
+	cp 0
+	jr z, .NoDec ;skip it if it would underflow
 	dec [hl]
+.NoDec
 	ld hl, ThrewBerryText
 	jr nc, .Animation
 	ld a, 0
