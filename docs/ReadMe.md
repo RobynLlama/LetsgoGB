@@ -1,13 +1,13 @@
 # LetsGoGB Project ReadMe
 
 ## Table of Contents
-* [Starter Mons](#Starter-Mons)
-* [Safari Game Mode](#Safari-Game-Mode)
-* [Imposter Battles](#Imposter-Battles)
-* [Earning Experience and Money](#Earning-Experience-and-Money)
-* [Pokeball Update](#Pokeball-Update)
-* [Known Issues](#Known-Issues)
-* [See Also / Whatever](#See-Also--Whatever)
+* [Starter Mons](#starter-mons)
+* [Safari Game Mode](#safari-game-mode)
+* [Imposter Battles](#imposter-battles)
+* [Earning Experience and Money](#earning-experience-and-money)
+* [Pokeball Update](#pokeball-update)
+* [Known Issues](#known-issues)
+* [See Also / Whatever](#see-also--whatever)
 
 >Note:
 >
