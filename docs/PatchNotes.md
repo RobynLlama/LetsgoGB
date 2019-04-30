@@ -2,7 +2,7 @@
 - [Project ReadMe](https://crunchepillar.github.io/LetsgoGB/)
 - **Patch Notes**
 - [Cool People](https://crunchepillar.github.io/LetsgoGB/CoolPeoples)
-- [Source Code](https://github.com/Crunchepillar/LetsgoGB)  
+- [Downloads](https://github.com/Crunchepillar/LetsgoGB/releases)  
 
 ---
 ## Upcoming Changes
