@@ -1,10 +1,16 @@
-# Upcoming Changes
-## The "Upcoming Changes" Release
+# Let's Go GB Documents
+- [Project ReadMe](https://crunchepillar.github.io/LetsgoGB/LetsGoReadMe)
+- **Patch Notes**
+- [Cool People](https://crunchepillar.github.io/LetsgoGB/CoolPeoples)
+- [Source Code](https://github.com/Crunchepillar/LetsgoGB)
+---
+## Upcoming Changes
+### The "Upcoming Changes" Release
 Release Notes:
 * Replaced some hidden Ultra Balls with Great Balls
 
-# Version 0.2.29 "Gen1Bugfix-Release2"
-## The "BEGONE BUGS" release
+## Version 0.2.29 "Gen1Bugfix-Release2"
+### The "BEGONE BUGS" release
 Release Notes:
 * Fixed several serious issues with Berries
   * Berries can no longer underflow the Escape Factor to 255
@@ -25,8 +31,8 @@ Release Notes:
     * High-crit  moves now provide +20% critical rate (up from 8.75%)
     * Maximum critical rate is now 50% (up from ~27.5%)
 
-# Version 0.2.16 "Gen1Bugfix-Release1"
-## The "Wow Gen1 sure is broken" release
+## Version 0.2.16 "Gen1Bugfix-Release1"
+### The "Wow Gen1 sure is broken" release
 Release Notes:
 * Toxic no longer interacts with other status effects
   * Burn no longer gains damage from the toxic counter if the target rested while toxic poisoned
@@ -45,8 +51,8 @@ Release Notes:
   * Safari Mode has a second page full of NONE.
   * Switch between pages using the PAGE command where BAIT used to be
 
-# Version 0.2.0 "Mechanics Overhaul"
-## The "Fix and balance safari mode" update
+## Version 0.2.0 "Mechanics Overhaul"
+### The "Fix and balance safari mode" update
 Release Notes:
 * Version flags and rom names have been normalized to "LetsGoEeveeGB" and "LetsGoPikachuGB"
   * Internal rom names are LETSGOGBEEVEE and LETSGOGBPIKA
@@ -67,8 +73,8 @@ Release Notes:
   * NEW: Pokemon over level 25 grant +1 reward
   * NEW: Pokemon over level 50 grant an additional +1 reward
   
-# Version 0.1.2 "BIG BOY"
-## The "Wow I broke it all" Update
+## Version 0.1.2 "BIG BOY"
+### The "Wow I broke it all" Update
 This release fixes a flippin' ton of bugs and aims to make the gameplay smoother and more fun. There are still some known issues make sure to check the readme.
 
 Saves are incompatible with 0.1.0 and will be detected as corrupt because I added to the SRAM.
@@ -84,8 +90,8 @@ Release Notes:
 * EXP ALL text removed. WARNING: DO NOT ACCEPT EXP ALL FROM OAK'S AIDE. Doing so may break your save in a future update
 * Old Man tutorial no longer uses Safari Mode and spends the player's balls
 
-# Version 0.1.0 "First Release"
-## The "This game is actually kinda playable as I envisioned it" update
+## Version 0.1.0 "First Release"
+### The "This game is actually kinda playable as I envisioned it" update
 First release. Very buggy
 Release Notes:
 * All wild encounters now use Safari Mode
