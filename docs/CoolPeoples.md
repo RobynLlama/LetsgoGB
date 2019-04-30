@@ -1,8 +1,9 @@
 # Let's Go GB Documents
-- [Project ReadMe](https://crunchepillar.github.io/LetsgoGB/LetsGoReadMe)
+- [Project ReadMe](https://crunchepillar.github.io/LetsgoGB/)
 - [Patch Notes](https://crunchepillar.github.io/LetsgoGB/PatchNotes)
 - **Cool People**
-- [Source Code](https://github.com/Crunchepillar/LetsgoGB)
+- [Source Code](https://github.com/Crunchepillar/LetsgoGB)  
+
 ---
 ## Cool Peoples
 ### Discord

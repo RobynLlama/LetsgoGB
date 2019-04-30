@@ -1,8 +1,9 @@
 # Let's Go GB Documents
-- [Project ReadMe](https://crunchepillar.github.io/LetsgoGB/LetsGoReadMe)
+- [Project ReadMe](https://crunchepillar.github.io/LetsgoGB/)
 - **Patch Notes**
 - [Cool People](https://crunchepillar.github.io/LetsgoGB/CoolPeoples)
-- [Source Code](https://github.com/Crunchepillar/LetsgoGB)
+- [Source Code](https://github.com/Crunchepillar/LetsgoGB)  
+
 ---
 ## Upcoming Changes
 ### The "Upcoming Changes" Release
