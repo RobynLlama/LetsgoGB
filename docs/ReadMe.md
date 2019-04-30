@@ -1,13 +1,20 @@
-# LetsGoGB Project ReadMe
+# Let's Go GB Documents
+- **Project ReadMe**
+- [Patch Notes](https://crunchepillar.github.io/LetsgoGB/PatchNotes)
+- [Cool People](https://crunchepillar.github.io/LetsgoGB/CoolPeoples)
+- [Source Code](https://github.com/Crunchepillar/LetsgoGB)  
+
+---
+## LetsGoGB Project ReadMe
 
 ## Table of Contents
-* [Starter Mons](#Starter-Mons)
-* [Safari Game Mode](#Safari-Game-Mode)
-* [Imposter Battles](#Imposter-Battles)
-* [Earning Experience and Money](#Earning-Experience-and-Money)
-* [Pokeball Update](#Pokeball-Update)
-* [Known Issues](#Known-Issues)
-* [See Also / Whatever](#See-Also--Whatever)
+* [Starter Mons](#starter-mons)
+* [Safari Game Mode](#safari-game-mode)
+* [Imposter Battles](#imposter-battles)
+* [Earning Experience and Money](#earning-experience-and-money)
+* [Pokeball Update](#pokeball-update)
+* [Known Issues](#known-issues)
+* [See Also / Whatever](#see-also--whatever)
 
 >Note:
 >
@@ -23,11 +30,11 @@ choose from so don't be surprised to see the same one across multiple games)
 
 ## Safari Game Mode
 All wild battles are now done in the Safari Game Mode style. The BALL option is now
-linked to the player's inventory of Great Balls rather than 30 Safari Balls. If there
-are no balls in your inventory you can still throw bait or rocks but doing so is
-almost completely useless due to the base mechanics being awful. These features will
-likely be replaced in a future update. Running will always work so at least caves
-full of Zubat will be a bit less annoying :]
+linked to the player's inventory of Great Balls rather than 30 Safari Balls. Throw
+rock and throw bait have been combined into Throw Berry which increases the wild
+mon's catch rate for the following 3 turns and negates the flee penalty on the turn
+it is first fed. Running will always work so at least caves full of Zubat will be a 
+bit less annoying :]
 
 ## Imposter Battles
 Dittos have been removed from all maps. How will you find one now? Hey, Maybe you're
@@ -40,15 +47,17 @@ the party size were 3. Trainer battles work the same as usual. The RELEASE optio
 in pokecenter boxes has been replaced with TRANSFER which gives the selected pokemon
 to Prof Oak in exchange for a random selection of items. There is currently no text
 prompt for what goodies you got but hopefully I can change that in the future. You
-are always guaranteed at least 1 ball returned from a TRANSFER.
+are always guaranteed at least 1 ball returned from a TRANSFER and one reward item.
+Pokemon of at least level 25 earn 1 additional reward and level 50 adds another.
 
 ## Pokeball Update
-Great Balls are actually re-named to Poke ball because I like it better. They are still
+Great Balls are actually re-named to Poke balls because I like it better. They are still
 great balls in terms of catch rate, this is a name-only change. All other balls have
-been removed from the game (including the master ball) which means, at present, there
-is no system in place to improve your capture rate except the awful BAIT and ROCK
-options that really suck, seriously, you should probably not use them on anything you
-actually want to catch. 
+been removed from the game (including the master ball). Rather than through new balls,
+catch rate is improved passively by the following:
+* Each badge adds a medium amount
+* Every 8 pokemon registered to the pokedex adds a small amount
+* Berries add a large amount
 
 ## Known Issues
 Legendary Pokemon can flee just like anything else which will clear them from the map.
@@ -62,7 +71,3 @@ when I actually remove it.
 If the player has a free slot for a newly captured pokemon it will reward itself with
 experience points for its own capture. Yea.. that's weird. I know where the flags are
 but I'm currently using a jenky method to make experience work so deal with it.
-
-## See Also / Whatever
-Project Home: https://github.com/Crunchepillar/LetsGoGB/ (report bugs and send me heart emojis)
-Also check out the CoolPeoples.md (its a text file)
