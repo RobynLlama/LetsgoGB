@@ -1,3 +1,8 @@
+# Upcoming Changes
+## The "Upcoming Changes" Release
+Release Notes:
+* Replaced some hidden Ultra Balls with Great Balls
+
 # Version 0.2.29 "Gen1Bugfix-Release2"
 ## The "BEGONE BUGS" release
 Release Notes:

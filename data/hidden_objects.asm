@@ -630,7 +630,7 @@ UnknownDungeon1HiddenObjects:
 	dbw BANK(HiddenItems),HiddenItems
 	db $FF
 UnknownDungeon3HiddenObjects:
-	db $03,$1b,ULTRA_BALL
+	db $03,$1b,GREAT_BALL
 	dbw BANK(HiddenItems),HiddenItems
 	db $FF
 PowerPlantHiddenObjects:
@@ -644,7 +644,7 @@ SeafoamIslands3HiddenObjects:
 	dbw BANK(HiddenItems),HiddenItems
 	db $FF
 SeafoamIslands5HiddenObjects:
-	db $11,$19,ULTRA_BALL
+	db $11,$19,GREAT_BALL
 	dbw BANK(HiddenItems),HiddenItems
 	db $FF
 Mansion1HiddenObjects:
@@ -679,13 +679,13 @@ Mansion4HiddenObjects:
 Route23HiddenObjects:
 	db $2c,$09,FULL_RESTORE
 	dbw BANK(HiddenItems),HiddenItems
-	db $46,$13,ULTRA_BALL
+	db $46,$13,GREAT_BALL
 	dbw BANK(HiddenItems),HiddenItems
 	db $5a,$08,MAX_ETHER
 	dbw BANK(HiddenItems),HiddenItems
 	db $FF
 VictoryRoad2HiddenObjects:
-	db $02,$05,ULTRA_BALL
+	db $02,$05,GREAT_BALL
 	dbw BANK(HiddenItems),HiddenItems
 	db $07,$1a,FULL_RESTORE
 	dbw BANK(HiddenItems),HiddenItems
