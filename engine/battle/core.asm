@@ -423,15 +423,16 @@ MainInBattleLoop:
 	and (1 << FRZ) | SLP ; is mon frozen or asleep?
 	jr nz, .selectEnemyMove ; if so, jump
 	ld a, [wPlayerBattleStatus1]
-	and (1 << STORING_ENERGY) | (1 << USING_TRAPPING_MOVE) ; check player is using Bide or using a multi-turn attack like wrap
+	;Check player is using bide flag
+	bit STORING_ENERGY, a
 	jr nz, .selectEnemyMove ; if so, jump
-	ld a, [wEnemyBattleStatus1]
-	bit USING_TRAPPING_MOVE, a ; check if enemy is using a multi-turn attack like wrap
-	jr z, .selectPlayerMove ; if not, jump
+	;ld a, [wEnemyBattleStatus1]
+	;bit USING_TRAPPING_MOVE, a ; check if enemy is using a multi-turn attack like wrap
+	;jr z, .selectPlayerMove ; if not, jump
 ; enemy is using a multi-turn attack like wrap, so player is trapped and cannot execute a move
-	ld a, $ff
-	ld [wPlayerSelectedMove], a
-	jr .selectEnemyMove
+	;ld a, $ff
+	;ld [wPlayerSelectedMove], a
+	;jr .selectEnemyMove
 .selectPlayerMove
 	ld a, [wActionResultOrTookBattleTurn]
 	and a ; has the player already used the turn (e.g. by using an item, trying to run or switching pokemon)
@@ -537,6 +538,8 @@ MainInBattleLoop:
 .AIActionUsedEnemyFirst
 	call HandlePoisonBurnLeechSeed
 	jp z, HandleEnemyMonFainted
+	call DealTrappingDamage
+	jp z, HandleEnemyMonFainted
 	call DrawHUDsAndHPBars
 	call ExecutePlayerMove
 	ld a, [wEscapedFromBattle]
@@ -546,6 +549,8 @@ MainInBattleLoop:
 	and a
 	jp z, HandleEnemyMonFainted
 	call HandlePoisonBurnLeechSeed
+	jp z, HandlePlayerMonFainted
+	call DealTrappingDamage
 	jp z, HandlePlayerMonFainted
 	call DrawHUDsAndHPBars
 	call CheckNumAttacksLeft
@@ -559,6 +564,8 @@ MainInBattleLoop:
 	and a
 	jp z, HandleEnemyMonFainted
 	call HandlePoisonBurnLeechSeed
+	jp z, HandlePlayerMonFainted
+	call DealTrappingDamage
 	jp z, HandlePlayerMonFainted
 	call DrawHUDsAndHPBars
 	ld a, $1
@@ -575,9 +582,117 @@ MainInBattleLoop:
 .AIActionUsedPlayerFirst
 	call HandlePoisonBurnLeechSeed
 	jp z, HandleEnemyMonFainted
+	call DealTrappingDamage
+	jp z, HandleEnemyMonFainted
 	call DrawHUDsAndHPBars
 	call CheckNumAttacksLeft
 	jp MainInBattleLoop
+	
+DealTrappingDamage:
+	;Check if the enemy is even using a trapping move
+	ld hl, wEnemyBattleStatus1
+	ld a, [H_WHOSETURN]
+	and a
+	jr z, .PlayerTurn1
+	ld hl, wPlayerBattleStatus1
+.PlayerTurn1
+	ld a, [hl]
+	bit USING_TRAPPING_MOVE, a
+	jr nz, .Start
+	ret
+.Start	
+	ld hl, wBattleMonHP
+	ld a, [wEnemyNumAttacksLeft]
+	ld d, a
+	ld bc, wEnemyNumAttacksLeft
+	ld a, [H_WHOSETURN]
+	and a
+	jr z, .PlayerTurn2
+	ld hl, wEnemyMonHP
+	ld a, [wPlayerNumAttacksLeft]
+	ld d, a
+	ld bc, wPlayerNumAttacksLeft
+.PlayerTurn2
+	ld a, d ;Check if there are any attacks left
+	and a
+	jr nz, .Cont
+	ret
+.Cont
+	dec d ;remove a remaining attack
+	ld a, d
+	ld [bc], a
+	push hl
+	push hl
+	ld bc, $e      ; skip to max HP
+	add hl, bc
+	ld a, [hli]    ; load max HP
+	ld [wHPBarMaxHP+1], a
+	ld b, a
+	ld a, [hl]
+	ld [wHPBarMaxHP], a
+	ld c, a
+	srl b
+	rr c
+	srl b
+	rr c
+	srl c
+	srl c         ; c = max HP/16 (assumption: HP < 1024)
+	ld a, c
+	and a
+	jr nz, .nonZeroDamage
+	inc c         ; damage is at least 1
+.nonZeroDamage
+	;Text and animation
+	push bc
+	ld hl, AttackContinuesText
+	call PrintText
+	xor a
+	;Animation type 0, shake horizontally
+	ld [wAnimationType], a
+	;Swap the target for the animation
+	ld a, [H_WHOSETURN]
+	xor $1
+	ld [H_WHOSETURN], a
+	ld a, WRAP
+	call PlayMoveAnimation
+	ld c, 20
+	call DelayFrames
+	;Swap the target back
+	ld a, [H_WHOSETURN]
+	xor $1
+	ld [H_WHOSETURN], a
+	pop bc
+	pop hl
+	inc hl
+	ld a, [hl]    ; subtract total damage from current HP
+	ld [wHPBarOldHP], a
+	sub c
+	ld [hld], a
+	ld [wHPBarNewHP], a
+	ld a, [hl]
+	ld [wHPBarOldHP+1], a
+	sbc b
+	ld [hl], a
+	ld [wHPBarNewHP+1], a
+	jr nc, .noOverkill
+	xor a         ; overkill: zero HP
+	ld [hli], a
+	ld [hl], a
+	ld [wHPBarNewHP], a
+	ld [wHPBarNewHP+1], a
+.noOverkill
+	call UpdateCurMonHPBar
+	pop hl
+	ld a, [hli]
+	or [hl]
+	ret nz          ; test if fainted
+	call DrawHUDsAndHPBars
+	ld c, 20
+	call DelayFrames
+	xor a
+	ret
+	
+	
 
 HandlePoisonBurnLeechSeed:
 	ld hl, wBattleMonHP
@@ -3170,11 +3285,11 @@ SelectEnemyMove:
 	ld a, [wEnemyMonStatus]
 	and SLP | 1 << FRZ ; sleeping or frozen
 	ret nz
-	ld a, [wEnemyBattleStatus1]
-	and (1 << USING_TRAPPING_MOVE) | (1 << STORING_ENERGY) ; using a trapping move like wrap or bide
-	ret nz
-	ld a, [wPlayerBattleStatus1]
-	bit USING_TRAPPING_MOVE, a ; caught in player's trapping move (e.g. wrap)
+	;ld a, [wEnemyBattleStatus1]
+	;and (1 << USING_TRAPPING_MOVE) | (1 << STORING_ENERGY) ; using a trapping move like wrap or bide
+	;ret nz
+	;ld a, [wPlayerBattleStatus1]
+	;bit USING_TRAPPING_MOVE, a ; caught in player's trapping move (e.g. wrap)
 	jr z, .canSelectMove
 .unableToSelectMove
 	ld a, $ff
@@ -3561,7 +3676,7 @@ CheckPlayerStatusConditions:
 
 .FrozenCheck
 	bit FRZ, [hl] ; frozen?
-	jr z, .HeldInPlaceCheck
+	jr z, .FlinchedCheck
 	ld hl, IsFrozenText
 	call PrintText
 	xor a
@@ -3569,14 +3684,14 @@ CheckPlayerStatusConditions:
 	ld hl, ExecutePlayerMoveDone ; player can't move this turn
 	jp .returnToHL
 
-.HeldInPlaceCheck
-	ld a, [wEnemyBattleStatus1]
-	bit USING_TRAPPING_MOVE, a ; is enemy using a mult-turn move like wrap?
-	jp z, .FlinchedCheck
-	ld hl, CantMoveText
-	call PrintText
-	ld hl, ExecutePlayerMoveDone ; player can't move this turn
-	jp .returnToHL
+;.HeldInPlaceCheck
+;	ld a, [wEnemyBattleStatus1]
+;	bit USING_TRAPPING_MOVE, a ; is enemy using a mult-turn move like wrap?
+;	jp z, .FlinchedCheck
+;	ld hl, CantMoveText
+;	call PrintText
+;	ld hl, ExecutePlayerMoveDone ; player can't move this turn
+;	jp .returnToHL
 
 .FlinchedCheck
 	ld hl, wPlayerBattleStatus1
@@ -3671,7 +3786,7 @@ CheckPlayerStatusConditions:
 .MonHurtItselfOrFullyParalysed
 	ld hl, wPlayerBattleStatus1
 	ld a, [hl]
-	; clear bide, thrashing, charging up, and trapping moves such as warp (already cleared for confusion damage)
+	; clear bide, thrashing, charging up, and trapping moves such as wrap (already cleared for confusion damage)
 	and $ff ^ ((1 << STORING_ENERGY) | (1 << THRASHING_ABOUT) | (1 << CHARGING_UP) | (1 << USING_TRAPPING_MOVE))
 	ld [hl], a
 	ld a, [wPlayerMoveEffect]
@@ -3742,7 +3857,7 @@ CheckPlayerStatusConditions:
 
 .ThrashingAboutCheck
 	bit THRASHING_ABOUT, [hl] ; is mon using thrash or petal dance?
-	jr z, .MultiturnMoveCheck
+	jr z, .RageCheck
 	ld a, THRASH
 	ld [wPlayerMoveNum], a
 	ld hl, ThrashingAboutText
@@ -3763,18 +3878,18 @@ CheckPlayerStatusConditions:
 	pop hl ; skip DecrementPP
 	jp .returnToHL
 
-.MultiturnMoveCheck
-	bit USING_TRAPPING_MOVE, [hl] ; is mon using multi-turn move?
-	jp z, .RageCheck
-	ld hl, AttackContinuesText
-	call PrintText
-	ld a, [wPlayerNumAttacksLeft]
-	dec a ; did multi-turn move end?
-	ld [wPlayerNumAttacksLeft], a
-	ld hl, getPlayerAnimationType ; if it didn't, skip damage calculation (deal damage equal to last hit),
-	                ; DecrementPP and MoveHitTest
-	jp nz, .returnToHL
-	jp .returnToHL
+;.MultiturnMoveCheck
+;	bit USING_TRAPPING_MOVE, [hl] ; is mon using multi-turn move?
+;	jp z, .RageCheck
+;	ld hl, AttackContinuesText
+;	call PrintText
+;	ld a, [wPlayerNumAttacksLeft]
+;	dec a ; did multi-turn move end?
+;	ld [wPlayerNumAttacksLeft], a
+;	ld hl, getPlayerAnimationType ; if it didn't, skip damage calculation (deal damage equal to last hit),
+;	                ; DecrementPP and MoveHitTest
+;	jp nz, .returnToHL
+;	jp .returnToHL
 
 .RageCheck
 	ld a, [wPlayerBattleStatus2]
@@ -6064,21 +6179,21 @@ CheckEnemyStatusConditions:
 	jp .enemyReturnToHL
 .checkIfFrozen
 	bit FRZ, [hl]
-	jr z, .checkIfTrapped
+	jr z, .checkIfFlinched
 	ld hl, IsFrozenText
 	call PrintText
 	xor a
 	ld [wEnemyUsedMove], a
 	ld hl, ExecuteEnemyMoveDone ; enemy can't move this turn
 	jp .enemyReturnToHL
-.checkIfTrapped
-	ld a, [wPlayerBattleStatus1]
-	bit USING_TRAPPING_MOVE, a ; is the player using a multi-turn attack like warp
-	jp z, .checkIfFlinched
-	ld hl, CantMoveText
-	call PrintText
-	ld hl, ExecuteEnemyMoveDone ; enemy can't move this turn
-	jp .enemyReturnToHL
+;.checkIfTrapped
+;	ld a, [wPlayerBattleStatus1]
+;	bit USING_TRAPPING_MOVE, a ; is the player using a multi-turn attack like wrap
+;	jp z, .checkIfFlinched
+;	ld hl, CantMoveText
+;	call PrintText
+;	ld hl, ExecuteEnemyMoveDone ; enemy can't move this turn
+;	jp .enemyReturnToHL
 .checkIfFlinched
 	ld hl, wEnemyBattleStatus1
 	bit FLINCHED, [hl] ; check if enemy mon flinched
@@ -6200,7 +6315,7 @@ CheckEnemyStatusConditions:
 .monHurtItselfOrFullyParalysed
 	ld hl, wEnemyBattleStatus1
 	ld a, [hl]
-	; clear bide, thrashing about, charging up, and multi-turn moves such as warp
+	; clear bide, thrashing about, charging up, and multi-turn moves such as wrap
 	and $ff ^ ((1 << STORING_ENERGY) | (1 << THRASHING_ABOUT) | (1 << CHARGING_UP) | (1 << USING_TRAPPING_MOVE))
 	ld [hl], a
 	ld a, [wEnemyMoveEffect]
@@ -6269,7 +6384,7 @@ CheckEnemyStatusConditions:
 	jp .enemyReturnToHL
 .checkIfThrashingAbout
 	bit THRASHING_ABOUT, [hl] ; is mon using thrash or petal dance?
-	jr z, .checkIfUsingMultiturnMove
+	jr z, .checkIfUsingRage
 	ld a, THRASH
 	ld [wEnemyMoveNum], a
 	ld hl, ThrashingAboutText
@@ -6289,17 +6404,17 @@ CheckEnemyStatusConditions:
 	ld [wEnemyConfusedCounter], a
 	pop hl ; skip DecrementPP
 	jp .enemyReturnToHL
-.checkIfUsingMultiturnMove
-	bit USING_TRAPPING_MOVE, [hl] ; is mon using multi-turn move?
-	jp z, .checkIfUsingRage
-	ld hl, AttackContinuesText
-	call PrintText
-	ld hl, wEnemyNumAttacksLeft
-	dec [hl] ; did multi-turn move end?
-	ld hl, GetEnemyAnimationType ; if it didn't, skip damage calculation (deal damage equal to last hit),
+;.checkIfUsingMultiturnMove
+;	bit USING_TRAPPING_MOVE, [hl] ; is mon using multi-turn move?
+;	jp z, .checkIfUsingRage
+;	ld hl, AttackContinuesText
+;	call PrintText
+;	ld hl, wEnemyNumAttacksLeft
+;	dec [hl] ; did multi-turn move end?
+;	ld hl, GetEnemyAnimationType ; if it didn't, skip damage calculation (deal damage equal to last hit),
 	                             ; DecrementPP and MoveHitTest
-	jp nz, .enemyReturnToHL
-	jp .enemyReturnToHL
+;	jp nz, .enemyReturnToHL
+;	jp .enemyReturnToHL
 .checkIfUsingRage
 	ld a, [wEnemyBattleStatus2]
 	bit USING_RAGE, a ; is mon using rage?
