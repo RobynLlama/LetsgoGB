@@ -9,6 +9,10 @@
 ### The "Upcoming Changes" Release
 Release Notes:
 * Replaced some hidden Ultra Balls with Great Balls
+* All trapping moves (Wrap, Bind, Constrict) have been reworked
+  * CYA: No longer consume the user's or target's turn
+  * NEW: Now deal damage at the end of each turn like in Generation 2+
+  * NEW: "<USER'S> Attack Continues!" text changed to "<TARGET> is squeezed!"
 
 ## Version 0.2.29 "Gen1Bugfix-Release2"
 ### The "BEGONE BUGS" release

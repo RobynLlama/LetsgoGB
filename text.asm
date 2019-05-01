@@ -1280,8 +1280,8 @@ _ThrashingAboutText::
 	done
 
 _AttackContinuesText::
-	text "<USER>'s"
-	line "attack continues!"
+	text "<USER>"
+	line "is squeezed!"
 	done
 
 _CantMoveText::
